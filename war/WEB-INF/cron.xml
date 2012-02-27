@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+	<!--  <cron>
+		<url>/tasks/fanFouJobPush</url>
+		<description>Add fanfou fetch task to TaskQueue.</description>
+		<schedule>every 1 minutes</schedule>
+		</cron>-->
+	<!-- 
+
+	<cron>
+		<url>/tasks/fanFouJobPush?id=0</url>
+		<description>Add fanfou fetch task 0</description>
+		<schedule>every 3 minutes</schedule>
+	</cron>
+	<cron>
+		<url>/tasks/fanFouJobPush?id=1</url>
+		<description>Add fanfou fetch task 1</description>
+		<schedule>every 3 minutes</schedule>
+	</cron>
+	<cron>
+		<url>/tasks/fanFouJobPush?id=2</url>
+		<description>Add fanfou fetch task 2</description>
+		<schedule>every 3 minutes</schedule>
+	</cron>
+	<cron>
+		<url>/tasks/fanFouJobPush?id=3</url>
+		<description>Add fanfou fetch task 3</description>
+		<schedule>every 3 minutes</schedule>
+	</cron>
+	<cron>
+		<url>/tasks/fanFouJobPush?id=4</url>
+		<description>Add fanfou fetch task 4</description>
+		<schedule>every 3 minutes</schedule>
+	</cron>
+	<cron>
+		<url>/tasks/fanFouJobPush?id=5</url>
+		<description>Add fanfou fetch task 5</description>
+		<schedule>every 3 minutes</schedule>
+	</cron>
+	<cron>
+		<url>/tasks/fanFouJobPush?id=6</url>
+		<description>Add fanfou fetch task 6</description>
+		<schedule>every 3 minutes</schedule>
+	</cron>
+	<cron>
+		<url>/tasks/fanFouJobPush?id=7</url>
+		<description>Add fanfou fetch task 7</description>
+		<schedule>every 3 minutes</schedule>
+	</cron>
+		-->
+</cronentries>

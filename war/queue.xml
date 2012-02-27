@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queue-entries>
+	<queue>
+		<name>fetch0</name>
+		<rate>10/m</rate>
+	</queue>
+	<queue>
+		<name>fetch1</name>
+		<rate>10/m</rate>
+	</queue>
+	<queue>
+		<name>fetch2</name>
+		<rate>10/m</rate>
+	</queue>
+	<queue>
+		<name>fetch3</name>
+		<rate>10/m</rate>
+	</queue>
+	<queue>
+		<name>fetch4</name>
+		<rate>10/m</rate>
+	</queue>
+	<queue>
+		<name>fetch5</name>
+		<rate>10/m</rate>
+	</queue>
+	<queue>
+		<name>fetch6</name>
+		<rate>10/m</rate>
+	</queue>
+	<queue>
+		<name>fetch7</name>
+		<rate>10/m</rate>
+	</queue>
+	<queue>
+		<name>fetch8</name>
+		<rate>10/m</rate>
+	</queue>
+	<queue>
+		<name>fetch9</name>
+		<rate>10/m</rate>
+	</queue>
+</queue-entries>
