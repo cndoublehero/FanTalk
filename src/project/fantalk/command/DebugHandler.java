@@ -90,9 +90,9 @@ public class DebugHandler extends BaseCommand {
             Map<Integer, String> map = datastore.getStatusesCache(user);
             if (map!=null && !map.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
-                Iterator iter = map.entrySet().iterator();
+                Iterator<Map.Entry<Integer, String>> iter = map.entrySet().iterator();
                 while (iter.hasNext()) {
-                    Map.Entry entry = (Map.Entry) iter.next();
+                    Map.Entry<Integer, String> entry = (Map.Entry<Integer, String>) iter.next();
                     String msg = ((String) (entry.getValue())).replaceAll(
                     		Utils.SPLIT_STR, " ");
                     sb.append(entry.getKey()).append("--> ID:")

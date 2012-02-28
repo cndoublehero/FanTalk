@@ -38,7 +38,6 @@ public enum Command {
     // 系统操作
     BROADCAST(new BroadcastHandler()), // 广播消息 admin -implemented.
     SYSINFO(new SystemHandler()),//显示系统信息 admin
-     SHOWUSER(new UserInfoHandler()),//显示某个用户的信息 Admin
     // LIST(new ListHandler()),//显示用户列表 Admin
     HELP(new HelpHandler()), // 显示帮助 -implemented.
     // INVITE(new InviteHandler()),//邀请某人使用
@@ -50,7 +49,6 @@ public enum Command {
     // GOOGLE(new GoogleHandler()),//Google搜索
     // WEATHER(new WeatherHandler()),//获取天气
     DEBUG(new DebugHandler()), // 调试命令 -implemented. admin
-    UPGRADE(new UpgradeToolHandler()),//数据库升级命令 admin
     DICTCN(new DictHandler()), // 词典查询命令
     HotCommand(new HotCommand()),//查看fanfou热词
     SearchCommand(new SearchCommand()),//fanfou搜索命令

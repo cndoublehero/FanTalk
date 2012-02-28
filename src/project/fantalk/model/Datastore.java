@@ -350,7 +350,7 @@ public class Datastore {
 		startOperation();
 		Query query = manager.get().newQuery(
 				"SELECT COUNT(1) FROM " + Member.class.getName()
-						+ " WHERE username != ''");
+						+ " WHERE fanfouUserName != ''");
 		Integer count=(Integer) query.execute();
 		endOperation();
 		return count;

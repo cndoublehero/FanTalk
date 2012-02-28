@@ -4,17 +4,14 @@ import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
 public final class Utils {
 	public static final String SPLIT_STR = ":::";
 	
-    /** 日志工具 */
-    private static final Logger logger = Logger
-            .getLogger(Utils.class.getName());
-
 	public static String[] process(String str) {
 		if (str == null)
 			throw new RuntimeException("传递字符串错误");
@@ -172,6 +169,21 @@ public final class Utils {
 		String tokenSecrect = token2[1];
 
 		return new String[] { tokenKey, tokenSecrect };
+	}
+    
+    /**
+     * 返回消息中的source来源信息
+     * @param source 
+     * @return 
+     */
+	public static String getSource(String source) {
+		Pattern p = Pattern.compile("<a.*href=\".*\".*target=\".*\">(.+?)</a>");
+		Matcher m = p.matcher(source);
+		if (m.matches()) {
+			return m.group(1);
+		} else {
+			return source;
+		}
 	}
     
     public static String getAppID(){

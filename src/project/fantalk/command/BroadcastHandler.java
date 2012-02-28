@@ -14,11 +14,9 @@ public class BroadcastHandler extends BaseCommand {
         if (XMPPUtils.isAdmin(message.email)) {
             XMPPUtils.broadcast("[系统消息] " + content);
         }
-
     }
 
     public String documentation() {
         return null;
     }
-
 }

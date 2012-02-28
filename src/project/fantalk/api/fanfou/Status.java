@@ -4,8 +4,6 @@
 package project.fantalk.api.fanfou;
 
 import java.util.Date;
-import java.util.logging.Logger;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,11 +16,6 @@ import project.fantalk.api.Utils;
  * @version 0.1 Fanfou API for Java
  */
 public class Status {
-
-	/** 日志工具 */
-    private static final Logger logger = Logger.getLogger(Status.class
-            .getName());
-
     private Date createdAt;
     private String id;
     private String text;
@@ -73,14 +66,7 @@ public class Status {
             s.createdAt = Parser.parseDate(o.getString("created_at"));
             s.id = o.getString("id");
             s.text = o.getString("text");
-			String fanfouSource = o.getString("source");
-			if (fanfouSource.indexOf("a href=") != -1) {
-				s.source = fanfouSource.substring(
-						fanfouSource.indexOf("\">") + 2,
-						fanfouSource.indexOf("</a>"));
-			} else {
-				s.source = fanfouSource;
-			}
+			s.source = Utils.getSource(o.getString("source"));
             s.truncated = o.getBoolean("truncated");
             s.inReplyToStatusId = o.getString("in_reply_to_status_id");
             s.inReplyToUserId = o.getString("in_reply_to_user_id");

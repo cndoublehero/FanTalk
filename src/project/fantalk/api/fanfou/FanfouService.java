@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,7 +26,6 @@ import project.fantalk.api.ReturnCode;
 import project.fantalk.api.Utils;
 import project.fantalk.api.common.basicAuth.AbstractBasicAuth;
 import project.fantalk.model.Member;
-
 
 public class FanfouService extends AbstractBasicAuth{
     /** 日志工具 */
@@ -70,29 +68,18 @@ public class FanfouService extends AbstractBasicAuth{
      * @param userId 用户ID
      * @return 返回某个用户的资料
      */
-    public User showUser(String userId) {
-        try {
-            String params = "id=" + Utils.encode(userId);
-            String data = doGet(API.SHOW_USER.url(), params);
-            return Parser.parseUser(data);
-        } catch (Exception e) {
-        	logger.log(Level.WARNING, e.getMessage(), e);
-        }
-        return null;
-    }
+	public User showUser(String userId) {
+		String data = doGet(API.SHOW_USER.url(), getParamByUserId(userId));
+		logger.info(data);
+		return Parser.parseUser(data);
+	}
 
     /**
      * 获取认证用户的资料
      * @return 返回认证用户的资料
      */
     public User showMe() {
-        try {
-            String data = doGet(API.SHOW_USER.url());
-            return Parser.parseUser(data);
-        } catch (Exception e) {
-        	logger.log(Level.WARNING, e.getMessage(), e);
-        }
-        return null;
+    	return showUser(null);
     }
 
     /**
@@ -121,9 +108,8 @@ public class FanfouService extends AbstractBasicAuth{
 	 * @return 黑名单用户列表
 	 */
 	public List<User> blockList(int pageNo) {
-		String params = "page=" + pageNo;
-		String data = doGet(API.BLOCKLIST.url(), params);
-		return Parser.parseUsers(data);
+		String data = doGet(API.BLOCKLIST.url(), "page=" + pageNo);
+		return parseUsers(data);
 	}
     
     /**
@@ -150,20 +136,12 @@ public class FanfouService extends AbstractBasicAuth{
      * @param userb 用户B的ID
      * @return 如果用户A关注了用户B，返回True
      */
-    public boolean relation(String usera, String userb) {
-        try {
-            String params = "user_a=" + Utils.encode(usera) + "&user_b="
-                    + Utils.encode(userb);
-            String data = doGet(API.FRIENDSHIP.url(), params);
-            JSONObject o = new JSONObject(data);
-            if (o.has("id")) {
-                return true;
-            }
-        } catch (JSONException e) {
-        	logger.log(Level.WARNING, e.getMessage(), e);
-        }
-        return false;
-    }
+	public boolean relation(String usera, String userb) {
+		String params = "user_a=" + Utils.encode(usera) + "&user_b="
+				+ Utils.encode(userb);
+		String data = doGet(API.FRIENDSHIP.url(), params);
+		return isActionSuccess(data);
+	}
 
     /**
      * @return 返回认证用户的好友ID列表
@@ -177,17 +155,11 @@ public class FanfouService extends AbstractBasicAuth{
      * @param userId 用户ID，如果为空，则表示获取认证用户的好友列表
      * @return 返回好友ID列表
      */
-    public List<String> friendsIDs(String userId) {
-        String data = null;
-        if (Utils.isEmpty(userId)) {
-            data = doGet(API.FRIENDS_IDS_LIST.url());
-        } else {
-            String params = "id=" + Utils.encode(userId);
-            data = doGet(API.FRIENDS_IDS_LIST.url(), params);
-        }
-        return Parser.parseFriends(data);
-
-    }
+	public List<String> friendsIDs(String userId) {
+		String data = doGet(API.FRIENDS_IDS_LIST.url(), getParamByUserId(userId));
+		logger.info(data);
+		return Parser.parseFriends(data);
+	}
 
     /**
      * @return 返回认证用户的关注者ID列表
@@ -201,18 +173,11 @@ public class FanfouService extends AbstractBasicAuth{
      * @param userId 用户ID，如果为空，则表示获取认证用户的关注者列表
      * @return 返回关注者ID列表
      */
-    public List<String> followersIDs(String userId) {
-
-        String data = null;
-        if (Utils.isEmpty(userId)) {
-            data = doGet(API.FOLLOWERS_IDS_LIST.url());
-        } else {
-            String params = "id=" + Utils.encode(userId);
-            data = doGet(API.FOLLOWERS_IDS_LIST.url(), params);
-        }
-        return Parser.parsefollowers(data);
-
-    }
+	public List<String> followersIDs(String userId) {
+		String data = doGet(API.FOLLOWERS_IDS_LIST.url(), getParamByUserId(userId));
+		logger.info(data);
+		return Parser.parsefollowers(data);
+	}
 
     /**
      * @return 返回认证用户的好友列表
@@ -226,16 +191,10 @@ public class FanfouService extends AbstractBasicAuth{
      * @param userId 用户ID，如果没有参数，则为认证用户
      * @return 返回User列表
      */
-    public List<User> friends(String userId) {
-        String data = null;
-        if (Utils.isEmpty(userId)) {
-            data = doGet(API.FRIENDS_LIST.url());
-        } else {
-            String params = "id=" + Utils.encode(userId);
-            data = doGet(API.FRIENDS_LIST.url(), params);
-        }
-        return Parser.parseUsers(data);
-    }
+	public List<User> friends(String userId) {
+		String data = doGet(API.FRIENDS_LIST.url(), getParamByUserId(userId));
+		return parseUsers(data);
+	}
 
     /**
      * 获取认证用户的好友列表
@@ -243,9 +202,8 @@ public class FanfouService extends AbstractBasicAuth{
      * @return 好友列表
      */
     public List<User> friends(int page) {
-        String params = "page=" + page;
-        String data = doGet(API.FRIENDS_LIST.url(), params);
-        return Parser.parseUsers(data);
+        String data = doGet(API.FRIENDS_LIST.url(), "page=" + page);
+        return parseUsers(data);
     }
 
     /**
@@ -260,16 +218,10 @@ public class FanfouService extends AbstractBasicAuth{
      * @param userId 用户ID，如果没有参数，则为认证用户
      * @return 返回User列表
      */
-    public List<User> followers(String userId) {
-        String data = null;
-        if (Utils.isEmpty(userId)) {
-            data = doGet(API.FOLLOWERS_LIST.url());
-        } else {
-            String params = "id=" + Utils.encode(userId);
-            data = doGet(API.FOLLOWERS_LIST.url(), params);
-        }
-        return Parser.parseUsers(data);
-    }
+	public List<User> followers(String userId) {
+		String data = doGet(API.FOLLOWERS_LIST.url(), getParamByUserId(userId));
+		return parseUsers(data);
+	}
 
     /**
      * 获取认证用户的关注者列表
@@ -277,9 +229,8 @@ public class FanfouService extends AbstractBasicAuth{
      * @return 返回关注者列表
      */
     public List<User> followers(int page) {
-        String params = "page=" + page;
-        String data = doGet(API.FOLLOWERS_LIST.url(), params);
-        return Parser.parseUsers(data);
+        String data = doGet(API.FOLLOWERS_LIST.url(), "page=" + page);
+        return parseUsers(data);
     }
 
     /*------------------------------饭否时间线操作方法------------------------------*/
@@ -316,9 +267,8 @@ public class FanfouService extends AbstractBasicAuth{
         if (page > 1) {
             sb.append("&page=" + page);
         }
-        String params = sb.toString();
-        String data = doGet(API.FRIENDS_TIMELINE.url(), params);
-        return Parser.parseTimeline(data);
+        String data = doGet(API.FRIENDS_TIMELINE.url(), sb.toString());
+        return parseTimeline(data);
     }
 
     /**
@@ -354,9 +304,8 @@ public class FanfouService extends AbstractBasicAuth{
         if (page > 1) {
             sb.append("&page=" + page);
         }
-        String params = sb.toString();
-        String data = doGet(API.USER_TIMELINE.url(), params);
-        return Parser.parseTimeline(data);
+        String data = doGet(API.USER_TIMELINE.url(), sb.toString());
+        return parseTimeline(data);
     }
 
     /**
@@ -389,9 +338,8 @@ public class FanfouService extends AbstractBasicAuth{
         if (page > 1) {
             sb.append("&page=" + page);
         }
-        String params = sb.toString();
-        String data = doGet(API.MENTIONS.url(), params);
-        return Parser.parseTimeline(data);
+        String data = doGet(API.MENTIONS.url(), sb.toString());
+        return parseTimeline(data);
     }
 
     /*------------------------------饭否消息操作方法------------------------------*/
@@ -400,21 +348,12 @@ public class FanfouService extends AbstractBasicAuth{
      * @param text 消息内容
      * @return 发送成功则返回True
      */
-    public ReturnCode update(String text) {
-        try {
-            String params = "status=" + Utils.encode(text) + "&source="
-                    + Utils.encode(getSource());
-            String data = doPost(API.UPDATE_STATUS.url(), params);
-            logger.info(data);
-            JSONObject o = new JSONObject(data);
-            if (o.has("id")) {
-                return ReturnCode.ERROR_OK;
-            }
-        } catch (JSONException e) {
-        	logger.log(Level.WARNING, e.getMessage(), e);
-        }
-        return ReturnCode.ERROR_FALSE;
-    }
+	public ReturnCode update(String text) {
+		String params = "status=" + Utils.encode(text) + "&source="
+				+ Utils.encode(getSource());
+		String data = doPost(API.UPDATE_STATUS.url(), params);
+		return getActionCode(data);
+	}
 
     /**
      * 回复消息
@@ -422,21 +361,13 @@ public class FanfouService extends AbstractBasicAuth{
      * @param inReplyToStatusId 回复的消息ID
      * @return 回复成功则返回True
      */
-    public boolean reply(String text, String inReplyToStatusId) {
-        try {
-            String params = "status=" + Utils.encode(text) + "&source="
-                    + Utils.encode(getSource()) + "&in_reply_to_status_id="
-                    + Utils.encode(inReplyToStatusId);
-            String data = doPost(API.UPDATE_STATUS.url(), params);
-            JSONObject o = new JSONObject(data);
-            if (o.has("id")) {
-                return true;
-            }
-        } catch (JSONException e) {
-        	logger.log(Level.WARNING, e.getMessage(), e);
-        }
-        return false;
-    }
+	public boolean reply(String text, String inReplyToStatusId) {
+		String params = "status=" + Utils.encode(text) + "&source="
+				+ Utils.encode(getSource()) + "&in_reply_to_status_id="
+				+ Utils.encode(inReplyToStatusId);
+		String data = doPost(API.UPDATE_STATUS.url(), params);
+		return isActionSuccess(data);
+	}
 
     /**
      * 转发消息
@@ -444,21 +375,13 @@ public class FanfouService extends AbstractBasicAuth{
      * @param inRepostStatusId 转发的消息ID
      * @return 转发成功则返回True
      */
-    public boolean repost(String text, String inRepostStatusId) {
-        try {
-            String params = "status=" + Utils.encode(text) + "&source="
-                    + Utils.encode(getSource()) + "&repost_status_id="
-                    + Utils.encode(inRepostStatusId);
-            String data = doPost(API.UPDATE_STATUS.url(), params);
-            JSONObject o = new JSONObject(data);
-            if (o.has("id")) {
-                return true;
-            }
-        } catch (JSONException e) {
-        	logger.log(Level.WARNING, e.getMessage(), e);
-        }
-        return false;
-    }
+	public boolean repost(String text, String inRepostStatusId) {
+		String params = "status=" + Utils.encode(text) + "&source="
+				+ Utils.encode(getSource()) + "&repost_status_id="
+				+ Utils.encode(inRepostStatusId);
+		String data = doPost(API.UPDATE_STATUS.url(), params);
+		return isActionSuccess(data);
+	}
 
     /**
      * 删除一条消息
@@ -493,7 +416,7 @@ public class FanfouService extends AbstractBasicAuth{
      */
     public List<Message> inbox() {
         String data = doGet(API.DIRECT_MESSAGES_INBOX.url());
-        return Parser.parseMessages(data);
+        return parseMessages(data);
     }
 
     /**
@@ -516,9 +439,8 @@ public class FanfouService extends AbstractBasicAuth{
         if (page > 1) {
             sb.append("&page=" + page);
         }
-        String params = sb.toString();
-        String data = doGet(API.DIRECT_MESSAGES_INBOX.url(), params);
-        return Parser.parseMessages(data);
+        String data = doGet(API.DIRECT_MESSAGES_INBOX.url(), sb.toString());
+        return parseMessages(data);
     }
 
     /**
@@ -526,7 +448,7 @@ public class FanfouService extends AbstractBasicAuth{
      */
     public List<Message> outbox() {
         String data = doGet(API.DIRECT_MESSAGES_OUTBOX.url());
-        return Parser.parseMessages(data);
+        return parseMessages(data);
     }
 
     /**
@@ -550,9 +472,8 @@ public class FanfouService extends AbstractBasicAuth{
         if (page > 1) {
             sb.append("&page=" + page);
         }
-        String params = sb.toString();
-        String data = doGet(API.DIRECT_MESSAGES_OUTBOX.url(), params);
-        return Parser.parseMessages(data);
+        String data = doGet(API.DIRECT_MESSAGES_OUTBOX.url(), sb.toString());
+        return parseMessages(data);
     }
 
     /**
@@ -561,20 +482,12 @@ public class FanfouService extends AbstractBasicAuth{
      * @param text 私信内容
      * @return 发送成功则返回True
      */
-    public boolean sendMessage(String userId, String text) {
-        try {
-            String params = "user=" + Utils.encode(userId) + "&text="
-                    + Utils.encode(text);
-            String data = doPost(API.SEND_DIRECT_MESSAGE.url(), params);
-            JSONObject o = new JSONObject(data);
-            if (o.has("id")) {
-                return true;
-            }
-        } catch (JSONException e) {
-        	logger.log(Level.WARNING, e.getMessage(), e);
-        }
-        return false;
-    }
+	public boolean sendMessage(String userId, String text) {
+		String params = "user=" + Utils.encode(userId) + "&text="
+				+ Utils.encode(text);
+		String data = doPost(API.SEND_DIRECT_MESSAGE.url(), params);
+		return isActionSuccess(data);
+	}
 
     /**
      * 回复私信
@@ -584,21 +497,13 @@ public class FanfouService extends AbstractBasicAuth{
      * @return 发送成功则返回True
      */
     public boolean replyMessage(String userId, String inReplyToMessageId,
-            String text) {
-        try {
-            String params = "user=" + Utils.encode(userId) + "&text="
-                    + Utils.encode(text) + "&in_reply_to_id="
-                    + Utils.encode(inReplyToMessageId);
-            String data = doPost(API.SEND_DIRECT_MESSAGE.url(), params);
-            JSONObject o = new JSONObject(data);
-            if (o.has("id")) {
-                return true;
-            }
-        } catch (JSONException e) {
-        	logger.log(Level.WARNING, e.getMessage(), e);
-        }
-        return false;
-    }
+			String text) {
+		String params = "user=" + Utils.encode(userId) + "&text="
+				+ Utils.encode(text) + "&in_reply_to_id="
+				+ Utils.encode(inReplyToMessageId);
+		String data = doPost(API.SEND_DIRECT_MESSAGE.url(), params);
+		return isActionSuccess(data);
+	}
 
     /**
      * 删除一条私信
@@ -614,19 +519,10 @@ public class FanfouService extends AbstractBasicAuth{
      * 验证帐号密码是否正确
      * @return 如果正确，返回True
      */
-    public ReturnCode verify() {
-
-        try {
-            String data = doGet(API.VERIFY_ACCOUNT.url());
-            JSONObject o = new JSONObject(data);
-            if (o.has("id")) {
-                return ReturnCode.ERROR_OK;
-            }
-        } catch (JSONException e) {
-        	logger.log(Level.WARNING, e.getMessage(), e);
-        }
-        return ReturnCode.ERROR_FALSE;
-    }
+	public ReturnCode verify() {
+		String data = doGet(API.VERIFY_ACCOUNT.url());
+		return getActionCode(data);
+	}
 
     /**
      * 搜索公开时间线
@@ -634,8 +530,8 @@ public class FanfouService extends AbstractBasicAuth{
      * @return 返回搜索结果列表
      */
     public List<Status> search(String keyword) {
-        String params = "q=" + Utils.encode(keyword);
-        String data = doGet(API.SEARCH.url(), params);
+        String data = doGet(API.SEARCH.url(), "q=" + Utils.encode(keyword));
+        logger.info(data);
         return Parser.parseStatuses(data);
     }
 
@@ -657,6 +553,7 @@ public class FanfouService extends AbstractBasicAuth{
     public List<Trends> trends() {
     	 try {
              String data = doGet(API.TRENDS.url());
+             logger.info(data);
              return Parser.parseTrends(data);
          } catch (JSONException e) {
         	 logger.log(Level.WARNING, e.getMessage(), e);
@@ -672,6 +569,7 @@ public class FanfouService extends AbstractBasicAuth{
 	public Notification notification() {
 		try {
 			String data = doGet(API.NOTIFICATION.url());
+			logger.info(data);
 			return Parser.parseNotification(data);
 		} catch (JSONException e) {
 			logger.log(Level.WARNING, e.getMessage(), e);
@@ -687,31 +585,89 @@ public class FanfouService extends AbstractBasicAuth{
      * @param id 参数：用户/消息/私信的ID
      * @return 成功就返回True
      */
-    private boolean doSingleAction(API api, String id) {
-        try {
-            String params = "id=" + Utils.encode(id);
-            String data = doPost(api.url(), params);
-            JSONObject o = new JSONObject(data);
-            if (o.has("id")) {
-                return true;
-            }
-        } catch (JSONException e) {
-        	logger.log(Level.WARNING, e.getMessage(), e);
-        }
-        return false;
-    }
+	private boolean doSingleAction(API api, String id) {
+		String data = doPost(api.url(), "id=" + Utils.encode(id));
+		return isActionSuccess(data);
+	}
 
-    private List<Status> doTimelineAction(API api, String userId) {
-        String data = null;
-        if (Utils.isEmpty(userId)) {
-            data = doGet(api.url());
-        } else {
-            String params = "id=" + Utils.encode(userId);
-            data = doGet(api.url(), params);
-        }
-        return Parser.parseTimeline(data);
-    }
+	/**
+	 * 判断操作是否成功，若返回的json数据（data）中包含有id字段，则表示成功了，返回true；否则表示失败了，返回false
+	 * 
+	 * @param data
+	 *            json数据
+	 * @return 成功就返回True；否则返回false
+	 */
+	private boolean isActionSuccess(String data) {
+		if (!Utils.isEmpty(data)) {
+			try {
+				logger.info(data);
+				JSONObject o = new JSONObject(data);
+				if (o.has("id")) {
+					return true;
+				}
+			} catch (JSONException e) {
+				logger.log(Level.WARNING, e.getMessage(), e);
+			}
+		}
+		return false;
+	}
+    
+	/**
+	 * 判断操作是否成功，若返回的json数据（data）中包含有id字段，则表示成功了，返回ERROR_OK；否则表示失败了，返回ERROR_FALSE
+	 * 
+	 * @param data
+	 *            json数据
+	 * @return 成功就返回ERROR_OK；否则返回ERROR_FALSE
+	 */
+	private ReturnCode getActionCode(String data) {
+		return isActionSuccess(data) ? ReturnCode.ERROR_OK
+				: ReturnCode.ERROR_FALSE;
+	}
+	
+	/**
+	 * 根据userId获取返回的参数
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	private String getParamByUserId(String userId) {
+		return userId == null ? null : "id=" + Utils.encode(userId);
+	}
+	
+	private List<Status> doTimelineAction(API api, String userId) {
+		String data = doGet(api.url(), getParamByUserId(userId));
+		return parseTimeline(data);
+	}
 
+	/**
+	 * @param data
+	 * @return 解析时间线
+	 */
+	private List<Status> parseTimeline(String data) {
+		logger.info(data);
+		return Parser.parseTimeline(data);
+	}
+
+	/**
+	 * @param data
+	 * @return 解析私信列表
+	 */
+	private List<Message> parseMessages(String data) {
+		logger.info(data);
+		return Parser.parseMessages(data);
+	}
+
+	/**
+	 * 解析用户列表
+	 * 
+	 * @param data
+	 * @return
+	 */
+	private List<User> parseUsers(String data) {
+		logger.info(data);
+		return Parser.parseUsers(data);
+	}
+	
     /**
      * 枚举，饭否API方法接口URL列表
      * @author mcxiaoke

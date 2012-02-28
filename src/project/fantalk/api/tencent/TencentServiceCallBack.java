@@ -1,33 +1,17 @@
 package project.fantalk.api.tencent;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.signature.QueryStringSigningStrategy;
 import project.fantalk.api.common.oauth.AbstractOauthCallback;
 import project.fantalk.api.common.oauth.UrlOAuthConsumer;
 import project.fantalk.api.common.oauth.UrlOAuthProvider;
-import project.fantalk.model.Datastore;
 import project.fantalk.model.Member;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 
 
 public class TencentServiceCallBack extends AbstractOauthCallback {
     private static final long serialVersionUID = -242231802919017615L;
-    private static final Logger logger = Logger
-            .getLogger(TencentServiceCallBack.class.getName());
-
     @Override
     public String getAccessTokenURL() {
         return TencentConstant.accessTokenURL;

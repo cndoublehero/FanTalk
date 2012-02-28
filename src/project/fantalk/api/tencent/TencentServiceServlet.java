@@ -1,17 +1,8 @@
 package project.fantalk.api.tencent;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
-import oauth.signpost.basic.DefaultOAuthProvider;
 import oauth.signpost.signature.QueryStringSigningStrategy;
-import project.fantalk.api.Utils;
 import project.fantalk.api.common.oauth.AbstractOauthServlet;
 import project.fantalk.api.common.oauth.UrlOAuthConsumer;
 import project.fantalk.api.common.oauth.UrlOAuthProvider;
