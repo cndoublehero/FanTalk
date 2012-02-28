@@ -4,12 +4,14 @@ import java.util.logging.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.builder.api.NetsApi;
+import org.scribe.oauth.OAuthService;
 
 import project.fantalk.api.ReturnCode;
 import project.fantalk.api.Utils;
 import project.fantalk.api.common.oauth.AbstractOAuth;
 import project.fantalk.model.Member;
-
 
 public class NetsServiceOAuth extends AbstractOAuth {
 	private static final Logger logger = Logger
@@ -43,6 +45,13 @@ public class NetsServiceOAuth extends AbstractOAuth {
 		return "网易微博";
 	}
 
+	@Override
+	public OAuthService getOAuthService() {
+		return new ServiceBuilder().provider(NetsApi.class)
+				.apiKey(NetsConstant.apiKey).apiSecret(NetsConstant.secret)
+				.build();
+	}
+	
 	public ReturnCode update(String text) {
 
 		try {

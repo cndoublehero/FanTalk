@@ -4,6 +4,9 @@ import java.util.logging.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.builder.api.SinaWeiboApi;
+import org.scribe.oauth.OAuthService;
 
 import project.fantalk.api.ReturnCode;
 import project.fantalk.api.Utils;
@@ -36,7 +39,22 @@ public class SinaServiceOAuth extends AbstractOAuth {
 		return member;
 	}
 
+	@Override
+	public String getApiKey() {
+		return SinaConstant.apiKey;
+	}
 
+	@Override
+	public String getApiSecret() {
+		return SinaConstant.secret;
+	}
+	
+	@Override
+	public OAuthService getOAuthService() {
+		return new ServiceBuilder().provider(SinaWeiboApi.class)
+				.apiKey(SinaConstant.apiKey).apiSecret(SinaConstant.secret)
+				.build();
+	}
 	public ReturnCode update(String text) {
 		try {
 			String params = "status=" + Utils.encode(text) + "&source="
@@ -96,15 +114,5 @@ public class SinaServiceOAuth extends AbstractOAuth {
 			return new StringBuilder().append(API_URL).append(value).append(
 					JSON).toString();
 		}
-	}
-
-	@Override
-	public String getApiKey() {
-		return SinaConstant.apiKey;
-	}
-
-	@Override
-	public String getApiSecret() {
-		return SinaConstant.secret;
 	}
 }

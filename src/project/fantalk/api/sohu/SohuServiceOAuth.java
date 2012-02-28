@@ -6,14 +6,17 @@ import java.util.logging.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.builder.api.SohuWeiboApi;
+import org.scribe.oauth.OAuthService;
 
 import project.fantalk.api.ReturnCode;
 import project.fantalk.api.Utils;
-import project.fantalk.api.common.oauth.AbstractUrlOauth;
+import project.fantalk.api.common.oauth.AbstractOAuth;
 import project.fantalk.model.Member;
 
 
-public class SohuServiceOAuth extends AbstractUrlOauth {
+public class SohuServiceOAuth extends AbstractOAuth {
 	private static final Logger logger = Logger
 			.getLogger(SohuServiceOAuth.class.getName());
 
@@ -51,6 +54,13 @@ public class SohuServiceOAuth extends AbstractUrlOauth {
 	@Override
 	public String getSNSName() {
 		return "搜狐微博";
+	}
+	
+	@Override
+	public OAuthService getOAuthService() {
+		return new ServiceBuilder().provider(SohuWeiboApi.class)
+				.apiKey(SohuConstant.apiKey).apiSecret(SohuConstant.secret)
+				.build();
 	}
 	
 	public ReturnCode update(String text) {

@@ -124,10 +124,8 @@ public class DictHandler extends BaseCommand {
         public boolean invalid;
         public String key;// 查询的词
         public String def;//
-        public String word;
 
         public DictData(String word) {
-            this.word = word;
             this.invalid = true;
             this.key = "";
             this.def = "";

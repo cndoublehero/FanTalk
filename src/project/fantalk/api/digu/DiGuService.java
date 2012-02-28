@@ -52,7 +52,6 @@ public class DiGuService extends AbstractBasicAuth {
 	}
 
 	public ReturnCode update(String text) {
-
 		try {
 			String params = "content=" + Utils.encode(text);
 			String data = doPost(API.UPDATE_STATUS.url(), params);

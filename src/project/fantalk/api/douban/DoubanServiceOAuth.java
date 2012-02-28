@@ -6,18 +6,18 @@ import java.util.logging.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.builder.api.DouBanApi;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
+import org.scribe.model.Verb;
+import org.scribe.oauth.OAuthService;
 
 import project.fantalk.api.ReturnCode;
 import project.fantalk.api.Utils;
 import project.fantalk.api.common.oauth.AbstractOAuth;
-import project.fantalk.api.common.oauth.OAuth;
-import project.fantalk.api.common.oauth.OAuthToken;
-import project.fantalk.api.common.oauth.PostParameter;
 import project.fantalk.model.Member;
-
-import com.google.appengine.api.urlfetch.HTTPHeader;
-import com.google.appengine.api.urlfetch.HTTPMethod;
-import com.google.appengine.api.urlfetch.HTTPRequest;
 
 public class DoubanServiceOAuth extends AbstractOAuth {
 	private static final Logger logger = Logger
@@ -52,29 +52,26 @@ public class DoubanServiceOAuth extends AbstractOAuth {
 	}
 
 	@Override
-	public HTTPRequest processRequeset(HTTPRequest request, String params) {
-		OAuth oauth = new OAuth(getApiKey(), getApiSecret());
-		long timestamp = System.currentTimeMillis() / 1000;
-		long nonce = System.nanoTime();
-		String url = request.getURL().toString();
-
-		String authorization = null;
-
-		logger.log(Level.INFO, "params==" + params + ",Method="
-				+ request.getMethod().toString() + "URL = " + url);
-		authorization = oauth.generateAuthorizationHeader(request.getMethod()
-				.toString(), url, PostParameter.parseGetParameters(null),
-				String.valueOf(nonce), String.valueOf(timestamp),
-				new OAuthToken(getUsername(), getPassword()));
-		logger.log(Level.INFO, "dssd==" + authorization);
-		request.addHeader(new HTTPHeader("Authorization", authorization));
-		if (HTTPMethod.POST == request.getMethod())
-			request.addHeader(new HTTPHeader("Content-Type", "application/atom+xml"));
-		return request;
+	public OAuthService getOAuthService() {
+		return new ServiceBuilder().provider(DouBanApi.class)
+				.apiKey(DoubanConstant.apiKey).apiSecret(DoubanConstant.secret)
+				.debugStream(System.out).build();
 	}
-
+	
+	@Override
+	public Response signAndSendPostRequest(String url, String param) {
+		OAuthRequest oAuthRequest = new OAuthRequest(Verb.POST, url);
+		OAuthService oAuthService = getOAuthService();
+		if (oAuthService != null) {
+			oAuthService.signRequest(new Token(getUsername(), getPassword()),
+					oAuthRequest);
+		}
+		oAuthRequest.addHeader("Content-Type", "application/atom+xml");
+		oAuthRequest.addPayload(param);
+		return oAuthRequest.send();
+	}
+	
 	public ReturnCode update(String text) {
-
 		String params = createSaying(text);
 		String data = doPost(API.UPDATE_STATUS.url(), params);
 		logger.log(Level.INFO, "data===" + data);
@@ -135,5 +132,4 @@ public class DoubanServiceOAuth extends AbstractOAuth {
 					JSON).toString();
 		}
 	}
-
 }

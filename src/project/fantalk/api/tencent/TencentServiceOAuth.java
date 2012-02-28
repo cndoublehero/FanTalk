@@ -6,13 +6,17 @@ import java.util.logging.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.builder.api.TencentApi;
+import org.scribe.model.SignatureType;
+import org.scribe.oauth.OAuthService;
 
 import project.fantalk.api.ReturnCode;
 import project.fantalk.api.Utils;
-import project.fantalk.api.common.oauth.AbstractUrlOauth;
+import project.fantalk.api.common.oauth.AbstractOAuth;
 import project.fantalk.model.Member;
 
-public class TencentServiceOAuth extends AbstractUrlOauth {
+public class TencentServiceOAuth extends AbstractOAuth {
 	private static final Logger logger = Logger
 			.getLogger(TencentServiceOAuth.class.getName());
 
@@ -52,6 +56,13 @@ public class TencentServiceOAuth extends AbstractUrlOauth {
 		return "腾讯微博";
 	}
 
+	@Override
+	public OAuthService getOAuthService() {
+		return new ServiceBuilder().provider(TencentApi.class)
+				.apiKey(TencentConstant.apiKey).apiSecret(TencentConstant.secret)
+				.signatureType(SignatureType.QueryString).build();
+	}
+	
 	public ReturnCode update(String text) {
 
 		try {

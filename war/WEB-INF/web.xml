@@ -102,18 +102,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>RenRenOauthServlet</servlet-name>
-		<servlet-class>
-			project.fantalk.api.renren.RenRenAuthorizeServlet
-		</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>RenRenOauthCallback</servlet-name>
-		<servlet-class>
-			project.fantalk.api.renren.RenRenAccessTokenServlet
-		</servlet-class>
-	</servlet>
-	<servlet>
 		<servlet-name>FanFouPushJob</servlet-name>
 		<servlet-class>
 			project.fantalk.task.FanFouPushJob
@@ -188,14 +176,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	<servlet-mapping>
 		<servlet-name>SohuOauthCallback</servlet-name>
 		<url-pattern>/callback/sohu</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>RenRenOauthServlet</servlet-name>
-		<url-pattern>/oauth/renren</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>RenRenOauthCallback</servlet-name>
-		<url-pattern>/callback/renren</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>TwitterOauthProxyServlet</servlet-name>

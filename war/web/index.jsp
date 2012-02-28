@@ -15,7 +15,6 @@
     boolean netease = !Utils.isEmpty(m.getNeteasePassword());
     boolean tecent = !Utils.isEmpty(m.getTecentPassword());
     boolean douban = !Utils.isEmpty(m.getDoubanPassword());
-    boolean digu = !Utils.isEmpty(m.getDiguPassword());
     String appid=Utils.getAppID();
 %>
 
@@ -91,15 +90,6 @@
 			    }
 			%>-->
 				<a href="/oauth/nets"> 点击<% if(netease){ %>重新<% } %>绑定</a>
-			</li>
-			<li>
-				嘀咕帐号 --><%
-			    if (digu) {
-			%>(已绑定)
-				<%
-			    }
-			%>
-				<a href="#"> 请在GTalk中绑定</a>
 			</li>
 			<li class="not">
 				Follow5帐号 -->
