@@ -1,4 +1,4 @@
-package project.fantalk.api.fanfou;
+package project.fantalk.api.fanfou.domain;
 
 import java.util.Date;
 
@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import project.fantalk.api.Utils;
+import project.fantalk.api.fanfou.Parser;
 
 public class Message {
     private String id;

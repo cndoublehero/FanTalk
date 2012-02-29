@@ -1,7 +1,7 @@
 /**
  * 
  */
-package project.fantalk.api.fanfou;
+package project.fantalk.api.fanfou.domain;
 
 import java.util.Date;
 
@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import project.fantalk.api.Utils;
+import project.fantalk.api.fanfou.Parser;
 
 /**
  * @author mcxiaoke
@@ -88,68 +89,6 @@ public class Status {
         } catch (JSONException e) {
             return null;
         }
-    }
-
-    {
-        /** 消息返回JSON数据 */
-        // created_at: "Sun Dec 12 04:25:50 +0000 2010"
-        // id: "2Lv-arZpSew"
-        // text: "@小土 如果没有小土爸妈，小土肯定不会出现，哈哈哈哈哈哈~~今晚雷雨加油！"
-        // source: "网页"
-        // truncated: false
-        // in_reply_to_status_id: "ZTa6pwj3E6I"
-        // in_reply_to_user_id: "xiaotu2007"
-        // favorited: false
-        // in_reply_to_screen_name: "小土"
-        // -user: {
-        // id: "小鬼小小帅"
-        // name: "小鬼"
-        // screen_name: "小鬼"
-        // location: "广东"
-        // gender: "女"
-        // birthday: "0000-01-00"
-        // description: "Me-无厘头的小鬼一个！知道天有多高，知道地有多大，知道海有多深，知道自己有多渺小；
-        // 但不知道自己有多“抵死”！也许笑是我与生俱来的本事，亦或是上帝无意间赐予我的礼物！"
-        // profile_image_url:
-        // "http://avatar1.fanfou.com/s0/00/d3/mg.jpg?1243428454"
-        // url: "http://sunnytimexiao.blog.163.com/"
-        // protected: false
-        // followers_count: 19
-        // friends_count: 27
-        // favourites_count: 0
-        // statuses_count: 306
-        // following: false
-        // notifications: false
-        // created_at: "Tue May 05 09:51:13 +0000 2009"
-        // utc_offset: 28800
-        // profile_background_color: "#3a9dcf"
-        // profile_text_color: "#4b585e"
-        // profile_link_color: "#3a9dcf"
-        // profile_sidebar_fill_color: "#000000"
-        // profile_sidebar_border_color: "#006fa6"
-        // profile_background_image_url:
-        // "http://avatar.fanfou.com/b0/00/d3/mg_1290787860.jpg"
-        // profile_background_tile: true
-        // }
-    }
-
-    {
-        /** 收藏列表返回JSON数据 */
-        // [
-        // -{
-        // created_at: "Fri Dec 10 01:03:41 +0000 2010"
-        // id: "589k5ZiDaVM"
-        // text: "我家四大宝贝：橡皮，蘑菇，灰太郎，懒羊羊，还有一盆不知名的顽强活着的小鱼儿"
-        // source: "网页"
-        // truncated: false
-        // in_reply_to_status_id: ""
-        // in_reply_to_user_id: ""
-        // favorited: true
-        // in_reply_to_screen_name: ""
-        // +user: { … }
-        // }
-        // +{ … }
-        // ]
     }
 
     public Date getCreatedAt() {

@@ -10,6 +10,10 @@ import project.fantalk.model.Member;
 
 public class FanFouServiceOAuth extends FanfouService {
 
+	private static final OAuthService FanFouOAuthService = new ServiceBuilder()
+			.provider(FanFouApi.class).apiKey(FanFouConstant.apiKey)
+			.apiSecret(FanFouConstant.secret).build();
+
 	public FanFouServiceOAuth(Member member) {
 		super(member.getFanfouUserName(), member.getFanfouPassWord());
 	}
@@ -24,9 +28,7 @@ public class FanFouServiceOAuth extends FanfouService {
 
 	@Override
 	public OAuthService getOAuthService() {
-		return new ServiceBuilder().provider(FanFouApi.class)
-				.apiKey(FanFouConstant.apiKey).apiSecret(FanFouConstant.secret)
-				.build();
+		return FanFouOAuthService;
 	}
 	
 	@Override

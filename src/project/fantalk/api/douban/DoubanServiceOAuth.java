@@ -22,7 +22,11 @@ import project.fantalk.model.Member;
 public class DoubanServiceOAuth extends AbstractOAuth {
 	private static final Logger logger = Logger
 			.getLogger(DoubanServiceOAuth.class.getName());
-
+	
+	private static final OAuthService DouBanOAuthService = new ServiceBuilder()
+			.provider(DouBanApi.class).apiKey(DoubanConstant.apiKey)
+			.apiSecret(DoubanConstant.secret).debugStream(System.out).build();
+	
 	public DoubanServiceOAuth(String username, String password) {
 		super(username, password);
 	}
@@ -53,9 +57,7 @@ public class DoubanServiceOAuth extends AbstractOAuth {
 
 	@Override
 	public OAuthService getOAuthService() {
-		return new ServiceBuilder().provider(DouBanApi.class)
-				.apiKey(DoubanConstant.apiKey).apiSecret(DoubanConstant.secret)
-				.debugStream(System.out).build();
+		return DouBanOAuthService;
 	}
 	
 	@Override

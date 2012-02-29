@@ -3,10 +3,10 @@ package project.fantalk.command;
 import java.util.List;
 
 import project.fantalk.api.fanfou.FanfouService;
-import project.fantalk.api.fanfou.Status;
+import project.fantalk.api.fanfou.domain.Status;
 
 
-public final class PubliclineCommand extends StatusesHanler {
+public final class PubliclineCommand extends StatusesHandler {
 
 	public PubliclineCommand() {
 		super("look", "see", "public");

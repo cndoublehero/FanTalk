@@ -4,6 +4,8 @@ import java.net.HttpURLConnection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
@@ -12,6 +14,7 @@ import org.scribe.oauth.OAuthService;
 import org.scribe.utils.OAuthEncoder;
 
 import project.fantalk.api.IBaseMethod;
+import project.fantalk.api.ReturnCode;
 import project.fantalk.api.Utils;
 import project.fantalk.model.Member;
 
@@ -194,5 +197,39 @@ public abstract class AbstractAuth implements IBaseMethod {
 					oAuthRequest);
 		}
 		return oAuthRequest.send();
+	}
+	
+	/**
+	 * 判断操作是否成功，若返回的json数据（data）中包含有id字段，则表示成功了，返回true；否则表示失败了，返回false
+	 * 
+	 * @param data
+	 *            json数据
+	 * @return 成功就返回True；否则返回false
+	 */
+	public boolean isActionSuccess(String data) {
+		if (!Utils.isEmpty(data)) {
+			try {
+				logger.info(data);
+				JSONObject o = new JSONObject(data);
+				if (o.has("id")) {
+					return true;
+				}
+			} catch (JSONException e) {
+				logger.log(Level.WARNING, e.getMessage(), e);
+			}
+		}
+		return false;
+	}
+    
+	/**
+	 * 判断操作是否成功，若返回的json数据（data）中包含有id字段，则表示成功了，返回ERROR_OK；否则表示失败了，返回ERROR_FALSE
+	 * 
+	 * @param data
+	 *            json数据
+	 * @return 成功就返回ERROR_OK；否则返回ERROR_FALSE
+	 */
+	public ReturnCode getActionCode(String data) {
+		return isActionSuccess(data) ? ReturnCode.ERROR_OK
+				: ReturnCode.ERROR_FALSE;
 	}
 }

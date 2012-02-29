@@ -134,5 +134,4 @@ public class UpdateHandler implements CommandHandler {
     public boolean matches(Message message) {
         return true;
     }
-
 }

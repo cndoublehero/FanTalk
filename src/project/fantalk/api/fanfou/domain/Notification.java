@@ -1,4 +1,4 @@
-package project.fantalk.api.fanfou;
+package project.fantalk.api.fanfou.domain;
 
 public class Notification {
 	private String mentions;

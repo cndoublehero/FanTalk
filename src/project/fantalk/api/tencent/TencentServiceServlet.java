@@ -40,31 +40,6 @@ public class TencentServiceServlet extends AbstractOauthServlet {
 		return TencentConstant.requestTokenURL;
 	}
 
-//	@Override
-//	public void doGet(HttpServletRequest request, HttpServletResponse response)
-//			throws ServletException, IOException {
-//		response.setContentType("text/html; charset=UTF-8");
-//
-//		UrlOAuthConsumer consumer = new UrlOAuthConsumer(getApiKey(),
-//				getApiSecret());
-//		consumer.setSigningStrategy(new QueryStringSigningStrategy());
-//		UrlOAuthProvider provider = new UrlOAuthProvider(getRequestTokenURL(),
-//				getAccessTokenURL(), getAuthorizeURL());
-//		 provider.setOAuth10a(true);
-//		try {
-//			String callbackUrl = Utils.getBaseURL(request) + getCallBackUrl();
-//			String authURL = provider.retrieveRequestToken(consumer,
-//					callbackUrl);
-//			request.getSession().setAttribute("token", consumer.getToken());
-//			request.getSession().setAttribute("tokenSecret",
-//					consumer.getTokenSecret());
-//			response.sendRedirect(authURL);
-//			return;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
 	@Override
 	public OAuthConsumer getConsumer() {
 		UrlOAuthConsumer consumer = new UrlOAuthConsumer(getApiKey(),
@@ -91,5 +66,4 @@ public class TencentServiceServlet extends AbstractOauthServlet {
 		provider.setOAuth10a(true);
 		return provider;
 	}
-
 }

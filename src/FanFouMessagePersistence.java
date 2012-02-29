@@ -15,7 +15,7 @@ import java.util.TimeZone;
 import com.google.appengine.repackaged.com.google.common.util.Base64;
 
 import project.fantalk.api.fanfou.Parser;
-import project.fantalk.api.fanfou.Status;
+import project.fantalk.api.fanfou.domain.Status;
 
 public class FanFouMessagePersistence {
 	private final static String UserName = "cndoublehero@gmail.com";

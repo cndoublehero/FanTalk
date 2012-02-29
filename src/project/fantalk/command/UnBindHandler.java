@@ -22,7 +22,7 @@ public class UnBindHandler extends BaseCommand {
         if (Utils.isEmpty(argument)) {
             XMPPUtils
                     .sendMessage(
-                            "请指定要解除绑定的帐号类型：fanfou/twitter/sina/nets/digu/tecent/douban/sohu",
+                            "请指定要解除绑定的帐号类型：fanfou/twitter/sina/nets/digu/tencent/douban/sohu",
                             sender);
             return;
         }

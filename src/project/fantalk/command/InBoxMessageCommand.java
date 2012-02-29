@@ -6,12 +6,11 @@ import java.util.Map;
 
 import project.fantalk.api.Utils;
 import project.fantalk.api.fanfou.FanfouService;
-import project.fantalk.api.fanfou.Message;
+import project.fantalk.api.fanfou.domain.Message;
 import project.fantalk.model.Datastore;
 import project.fantalk.model.Member;
 
-
-public class InBoxMessageCommand extends AbstractMessageHanler {
+public class InBoxMessageCommand extends AbstractMessageHandler {
 
 	public InBoxMessageCommand() {
 		super("inbox", "in");
@@ -38,11 +37,10 @@ public class InBoxMessageCommand extends AbstractMessageHanler {
 	}
 
 	public StringBuilder processInBoxMessages(Member m, List<Message> messages) {
-
 		StringBuilder sb = new StringBuilder();
 		Map<Integer, String> map = new HashMap<Integer, String>();
 		for (int i = 0; i < messages.size(); i++) {
-			project.fantalk.api.fanfou.Message message = messages.get(i);
+			Message message = messages.get(i);
 			 if (i == 0) {
 			        m.setLastMessageId(message.getId());
 			        m.put();
@@ -64,5 +62,4 @@ public class InBoxMessageCommand extends AbstractMessageHanler {
 		}
 		return sb;
 	}
-
 }

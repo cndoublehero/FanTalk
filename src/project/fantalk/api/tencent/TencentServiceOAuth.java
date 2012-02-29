@@ -3,7 +3,6 @@ package project.fantalk.api.tencent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.scribe.builder.ServiceBuilder;
@@ -19,7 +18,12 @@ import project.fantalk.model.Member;
 public class TencentServiceOAuth extends AbstractOAuth {
 	private static final Logger logger = Logger
 			.getLogger(TencentServiceOAuth.class.getName());
-
+	
+	private static final OAuthService TencentOAuthService = new ServiceBuilder()
+			.provider(TencentApi.class).apiKey(TencentConstant.apiKey)
+			.apiSecret(TencentConstant.secret)
+			.signatureType(SignatureType.QueryString).build();
+	
 	public TencentServiceOAuth(String username, String password) {
 		super(username, password);
 	}
@@ -58,43 +62,36 @@ public class TencentServiceOAuth extends AbstractOAuth {
 
 	@Override
 	public OAuthService getOAuthService() {
-		return new ServiceBuilder().provider(TencentApi.class)
-				.apiKey(TencentConstant.apiKey).apiSecret(TencentConstant.secret)
-				.signatureType(SignatureType.QueryString).build();
+		return TencentOAuthService;
 	}
 	
 	public ReturnCode update(String text) {
-
-		try {
-			String params = "format=json&content=" + Utils.encode(text)
-					+ "&clientip=72.14.203.141";
-			String data = doPost(API.UPDATE_STATUS.url(), params);
-			JSONObject o = new JSONObject(data);
-			logger.warning(o.toString());
-			if (o.has("msg") && "ok".equalsIgnoreCase(o.getString("msg"))) {
-				return ReturnCode.ERROR_OK;
-			}
-		} catch (JSONException e) {
-			logger.log(Level.WARNING, e.getMessage(), e);
-		} 
-		return ReturnCode.ERROR_FALSE;
-
+		String params = "format=json&content=" + Utils.encode(text)
+				+ "&clientip=72.14.203.141";
+		String data = doPost(API.UPDATE_STATUS.url(), params);
+		return getActionReturnCode(data);
 	}
 
 	public ReturnCode verify() {
-		try {
-			String params = "format=json";
-			String data = doGet(API.VERIFY_ACCOUNT.url(), params);
-			JSONObject o = new JSONObject(data);
-			logger.warning(o.toString());
-			if (o.has("msg") && "ok".equalsIgnoreCase(o.getString("msg"))) {
-				return ReturnCode.ERROR_OK;
+		String params = "format=json";
+		String data = doGet(API.VERIFY_ACCOUNT.url(), params);
+		return getActionReturnCode(data);
+	}
+	
+	private ReturnCode getActionReturnCode(String data) {
+		if (!Utils.isEmpty(data)) {
+			try {
+				logger.info(data);
+				JSONObject o = new JSONObject(data);
+				logger.info(o.toString());
+				if (o.has("msg") && "ok".equalsIgnoreCase(o.getString("msg"))) {
+					return ReturnCode.ERROR_OK;
+				}
+			} catch (JSONException e) {
+				logger.log(Level.WARNING, e.getMessage(), e);
 			}
-		} catch (JSONException e) {
-			logger.log(Level.WARNING, e.getMessage(), e);
 		}
 		return ReturnCode.ERROR_FALSE;
-
 	}
 
 	/**

@@ -4,11 +4,11 @@ import java.util.List;
 
 import project.fantalk.api.Utils;
 import project.fantalk.api.fanfou.FanfouService;
-import project.fantalk.api.fanfou.Message;
+import project.fantalk.api.fanfou.domain.Message;
 import project.fantalk.model.Member;
 
 
-public class OutBoxMessageCommand extends AbstractMessageHanler {
+public class OutBoxMessageCommand extends AbstractMessageHandler {
 
 	public OutBoxMessageCommand() {
 		super("outbox", "out");
@@ -35,10 +35,10 @@ public class OutBoxMessageCommand extends AbstractMessageHanler {
 	}
 
 	public static StringBuilder processOutBoxMessages(Member m,
-			List<project.fantalk.api.fanfou.Message> messages) {
+			List<project.fantalk.api.fanfou.domain.Message> messages) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < messages.size(); i++) {
-			project.fantalk.api.fanfou.Message message = messages.get(i);
+			Message message = messages.get(i);
 			String senderName = message.getSenderScreenName();
 			String text = message.getText();
 			String time = Utils.getInterval(message.getCreatedAt());

@@ -19,7 +19,7 @@ import project.fantalk.api.fanfou.FanfouService;
 import project.fantalk.api.fanfou.FanfouServiceFactory;
 import project.fantalk.command.HomeHandler;
 import project.fantalk.command.MentionsHandler;
-import project.fantalk.command.StatusesHanler;
+import project.fantalk.command.StatusesHandler;
 import project.fantalk.model.Datastore;
 import project.fantalk.model.Member;
 import project.fantalk.xmpp.XMPPUtils;
@@ -36,8 +36,8 @@ public class FanfouPushTask extends HttpServlet {
 
     private static final int PageSize = 15;
     
-    private static final StatusesHanler MentionsHandler = new MentionsHandler();
-    private static final StatusesHanler HomeHandler = new HomeHandler();
+    private static final StatusesHandler MentionsHandler = new MentionsHandler();
+    private static final StatusesHandler HomeHandler = new HomeHandler();
     
     
     @Override

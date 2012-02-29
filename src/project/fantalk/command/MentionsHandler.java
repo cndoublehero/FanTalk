@@ -3,11 +3,11 @@ package project.fantalk.command;
 import java.util.List;
 
 import project.fantalk.api.fanfou.FanfouService;
-import project.fantalk.api.fanfou.Status;
+import project.fantalk.api.fanfou.domain.Status;
 import project.fantalk.model.Member;
 
 
-public final class MentionsHandler extends StatusesHanler {
+public final class MentionsHandler extends StatusesHandler {
 
 	public MentionsHandler() {
 		super("mentions", "tome");

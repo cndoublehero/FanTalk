@@ -20,11 +20,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import project.fantalk.api.ReturnCode;
 import project.fantalk.api.Utils;
 import project.fantalk.api.common.basicAuth.AbstractBasicAuth;
+import project.fantalk.api.fanfou.domain.Message;
+import project.fantalk.api.fanfou.domain.Notification;
+import project.fantalk.api.fanfou.domain.Status;
+import project.fantalk.api.fanfou.domain.Trends;
+import project.fantalk.api.fanfou.domain.User;
 import project.fantalk.model.Member;
 
 public class FanfouService extends AbstractBasicAuth{
@@ -34,11 +38,6 @@ public class FanfouService extends AbstractBasicAuth{
     /** 饭否API Source */
     private static final String SOURCE = "fantalk";
 
-    /**
-     * 构造函数，饭否暂时只支持Basic认证
-     * @param username 饭否用户名
-     * @param password 饭否密码
-     */
     public FanfouService(String username, String password) {
     	super(username, password);
     }
@@ -588,40 +587,6 @@ public class FanfouService extends AbstractBasicAuth{
 	private boolean doSingleAction(API api, String id) {
 		String data = doPost(api.url(), "id=" + Utils.encode(id));
 		return isActionSuccess(data);
-	}
-
-	/**
-	 * 判断操作是否成功，若返回的json数据（data）中包含有id字段，则表示成功了，返回true；否则表示失败了，返回false
-	 * 
-	 * @param data
-	 *            json数据
-	 * @return 成功就返回True；否则返回false
-	 */
-	private boolean isActionSuccess(String data) {
-		if (!Utils.isEmpty(data)) {
-			try {
-				logger.info(data);
-				JSONObject o = new JSONObject(data);
-				if (o.has("id")) {
-					return true;
-				}
-			} catch (JSONException e) {
-				logger.log(Level.WARNING, e.getMessage(), e);
-			}
-		}
-		return false;
-	}
-    
-	/**
-	 * 判断操作是否成功，若返回的json数据（data）中包含有id字段，则表示成功了，返回ERROR_OK；否则表示失败了，返回ERROR_FALSE
-	 * 
-	 * @param data
-	 *            json数据
-	 * @return 成功就返回ERROR_OK；否则返回ERROR_FALSE
-	 */
-	private ReturnCode getActionCode(String data) {
-		return isActionSuccess(data) ? ReturnCode.ERROR_OK
-				: ReturnCode.ERROR_FALSE;
 	}
 	
 	/**

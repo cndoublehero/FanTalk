@@ -1,9 +1,5 @@
 package project.fantalk.api.sina;
 
-import java.util.logging.Logger;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.SinaWeiboApi;
 import org.scribe.oauth.OAuthService;
@@ -13,11 +9,11 @@ import project.fantalk.api.Utils;
 import project.fantalk.api.common.oauth.AbstractOAuth;
 import project.fantalk.model.Member;
 
-
 public class SinaServiceOAuth extends AbstractOAuth {
-	private static final Logger logger = Logger
-			.getLogger(SinaServiceOAuth.class.getName());
-
+	private static final OAuthService SinaOAuthService = new ServiceBuilder()
+			.provider(SinaWeiboApi.class).apiKey(SinaConstant.apiKey)
+			.apiSecret(SinaConstant.secret).build();
+	
 	public SinaServiceOAuth(String username, String password) {
 		super(username, password);
 	}
@@ -51,40 +47,20 @@ public class SinaServiceOAuth extends AbstractOAuth {
 	
 	@Override
 	public OAuthService getOAuthService() {
-		return new ServiceBuilder().provider(SinaWeiboApi.class)
-				.apiKey(SinaConstant.apiKey).apiSecret(SinaConstant.secret)
-				.build();
+		return SinaOAuthService;
 	}
-	public ReturnCode update(String text) {
-		try {
-			String params = "status=" + Utils.encode(text) + "&source="
-					+ Utils.encode(getSource());
-			String data = doPost(API.UPDATE_STATUS.url(), params);
-			JSONObject o = new JSONObject(data);
-			if (o.has("id")) {
-				return ReturnCode.ERROR_OK;
-			}
-		} catch (JSONException e) {
-			logger.warning(e.getMessage());
-		} catch (RuntimeException e) {
-			logger.warning(e.getMessage());
 
-		}
-		return ReturnCode.ERROR_FALSE;
+	public ReturnCode update(String text) {
+		String params = "status=" + Utils.encode(text) + "&source="
+				+ Utils.encode(getSource());
+		String data = doPost(API.UPDATE_STATUS.url(), params);
+		return getActionCode(data);
 	}
 
 	public ReturnCode verify() {
-		try {
-			String params = "source=" + Utils.encode(getSource());
-			String data = doGet(API.VERIFY_ACCOUNT.url(), params);
-			JSONObject o = new JSONObject(data);
-			if (o.has("id")) {
-				return ReturnCode.ERROR_OK;
-			}
-		} catch (JSONException e) {
-		}
-		return ReturnCode.ERROR_FALSE;
-
+		String params = "source=" + Utils.encode(getSource());
+		String data = doGet(API.VERIFY_ACCOUNT.url(), params);
+		return getActionCode(data);
 	}
 
 	public String getSource() {

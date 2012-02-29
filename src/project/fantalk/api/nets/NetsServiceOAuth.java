@@ -1,9 +1,5 @@
 package project.fantalk.api.nets;
 
-import java.util.logging.Logger;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.NetsApi;
 import org.scribe.oauth.OAuthService;
@@ -14,9 +10,10 @@ import project.fantalk.api.common.oauth.AbstractOAuth;
 import project.fantalk.model.Member;
 
 public class NetsServiceOAuth extends AbstractOAuth {
-	private static final Logger logger = Logger
-			.getLogger(NetsServiceOAuth.class.getName());
-
+	private static final OAuthService NetsOAuthService = new ServiceBuilder()
+			.provider(NetsApi.class).apiKey(NetsConstant.apiKey)
+			.apiSecret(NetsConstant.secret).build();
+	
 	public NetsServiceOAuth(String username, String password) {
 		super(username, password);
 	}
@@ -47,41 +44,18 @@ public class NetsServiceOAuth extends AbstractOAuth {
 
 	@Override
 	public OAuthService getOAuthService() {
-		return new ServiceBuilder().provider(NetsApi.class)
-				.apiKey(NetsConstant.apiKey).apiSecret(NetsConstant.secret)
-				.build();
+		return NetsOAuthService;
 	}
 	
 	public ReturnCode update(String text) {
-
-		try {
-			String params = "status=" + Utils.encode(text);
-			String data = doPost(API.UPDATE_STATUS.url(), params);
-			JSONObject o = new JSONObject(data);
-			if (o.has("id")) {
-				return ReturnCode.ERROR_OK;
-			}
-		} catch (JSONException e) {
-			logger.warning(e.getMessage());
-		} catch (RuntimeException e) {
-			logger.warning(e.getMessage());
-
-		}
-		return ReturnCode.ERROR_FALSE;
-
+		String params = "status=" + Utils.encode(text);
+		String data = doPost(API.UPDATE_STATUS.url(), params);
+		return getActionCode(data);
 	}
 
 	public ReturnCode verify() {
-		try {
-			String data = doGet(API.VERIFY_ACCOUNT.url());
-			JSONObject o = new JSONObject(data);
-			if (o.has("id")) {
-				return ReturnCode.ERROR_OK;
-			}
-		} catch (JSONException e) {
-		}
-		return ReturnCode.ERROR_FALSE;
-
+		String data = doGet(API.VERIFY_ACCOUNT.url());
+		return getActionCode(data);
 	}
 
 	/**

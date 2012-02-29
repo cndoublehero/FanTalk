@@ -30,5 +30,4 @@ public class SystemHandler extends BaseCommand {
     public String documentation() {
         return "-sys/sysinfo 查看统计信息";
     }
-
 }

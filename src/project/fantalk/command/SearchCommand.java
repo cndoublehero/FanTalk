@@ -5,7 +5,7 @@ import java.util.List;
 import project.fantalk.api.Utils;
 import project.fantalk.api.fanfou.FanfouService;
 import project.fantalk.api.fanfou.FanfouServiceFactory;
-import project.fantalk.api.fanfou.Status;
+import project.fantalk.api.fanfou.domain.Status;
 import project.fantalk.model.Datastore;
 import project.fantalk.model.Member;
 import project.fantalk.xmpp.Message;

@@ -23,14 +23,19 @@ abstract class BaseCommand implements CommandHandler {
 
     public abstract void doCommand(Message message, String argument);
 
-    public void doCommand(Message message) {
-        Matcher matcher = getMatcher(message);
-        String argument = matcher.group(1);
-        if (argument != null) {
-            argument = argument.trim();
-        }
-        doCommand(message, argument);
+    public void doCommand(Message message, String commandName, String content) {
+    	doCommand(message, content);
     }
+    
+	public void doCommand(Message message) {
+		Matcher matcher = getMatcher(message);
+		String commandName = matcher.group(0);
+		String argument = matcher.group(1);
+		if (argument != null) {
+			argument = argument.trim();
+		}
+		doCommand(message, commandName, argument);
+	}
 
     public boolean matches(Message msg) {
         return getMatcher(msg) != null;

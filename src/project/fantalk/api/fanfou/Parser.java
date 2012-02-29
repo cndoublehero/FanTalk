@@ -12,6 +12,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import project.fantalk.api.Utils;
+import project.fantalk.api.fanfou.domain.Message;
+import project.fantalk.api.fanfou.domain.Notification;
+import project.fantalk.api.fanfou.domain.Status;
+import project.fantalk.api.fanfou.domain.Trends;
+import project.fantalk.api.fanfou.domain.User;
 
 /**
  * @author mcxiaoke JSON数据解析工具类

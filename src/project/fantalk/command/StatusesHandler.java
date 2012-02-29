@@ -9,7 +9,7 @@ import java.util.TimeZone;
 import project.fantalk.api.Utils;
 import project.fantalk.api.fanfou.FanfouService;
 import project.fantalk.api.fanfou.FanfouServiceFactory;
-import project.fantalk.api.fanfou.Status;
+import project.fantalk.api.fanfou.domain.Status;
 import project.fantalk.model.Datastore;
 import project.fantalk.model.Member;
 import project.fantalk.xmpp.Message;
@@ -18,9 +18,9 @@ import project.fantalk.xmpp.XMPPUtils;
 
 import com.google.appengine.api.xmpp.JID;
 
-public abstract class StatusesHanler extends BaseCommand {
+public abstract class StatusesHandler extends BaseCommand {
 
-    StatusesHanler(String name, String... otherNames) {
+    StatusesHandler(String name, String... otherNames) {
 		super(name, otherNames);
 	}
     
@@ -92,13 +92,13 @@ public abstract class StatusesHanler extends BaseCommand {
 			}
 		    String name = s.getUserName();
 			String text = s.getText().replaceAll("<b>", "")
-					.replaceAll("</b>", "").replaceAll("&quot;", "'");
+					.replaceAll("</b>", "").replaceAll("&quot;", "'")
+					.replaceAll("&gt", ">").replaceAll("&lt;", ">");
 //		    String id = s.getId();
 		    String time = Utils.getInterval(s.getCreatedAt());
 		    map.put(i, s.process());
 		    sb.append(name).append("：").append(text).append("  [ ID:")
 		            .append(i)
-		            /** .append(id) */
 		            .append(",  Time:").append(time).append(" ]\n\n");
 		}
 		if (map!= null && !map.isEmpty()) {

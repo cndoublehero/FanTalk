@@ -3,7 +3,7 @@ package project.fantalk.command;
 import project.fantalk.api.Utils;
 import project.fantalk.api.fanfou.FanfouService;
 import project.fantalk.api.fanfou.FanfouServiceFactory;
-import project.fantalk.api.fanfou.Notification;
+import project.fantalk.api.fanfou.domain.Notification;
 import project.fantalk.model.Datastore;
 import project.fantalk.model.Member;
 import project.fantalk.xmpp.Message;

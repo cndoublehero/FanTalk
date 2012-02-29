@@ -11,7 +11,6 @@ import project.fantalk.xmpp.XMPPUtils;
 
 import com.google.appengine.api.xmpp.JID;
 
-
 /**
  * 同步发送到其它微博的开启/关闭
  * @author mcxiaoke
@@ -49,5 +48,4 @@ public class SyncHandler extends BaseCommand {
     public String documentation() {
         return "-sync on/off\n开启或关闭同步更新其它微博，暂时只支持同步更新Twitter";
     }
-
 }

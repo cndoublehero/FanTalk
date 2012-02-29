@@ -25,8 +25,6 @@ public enum Command {
     // FANFOUSEARCH(new FanfouSearchHandler()),//饭否消息搜索
     HOME(new HomeHandler()), // 获取自己的主页时间线 -implemented.
     MENTIONS(new MentionsHandler()),//获取@消息, -implemented.
-    FANFOU(new FanfouHandler()), // 仅发送消息到饭否 -implemented.
-    TWITTER(new TwitterHandler()), // 仅发送消息到Twitter -implemented.
     // 饭否API设置
     // NOTIFY(new NotifyHandler()),//通知类型设置
     PUSH(new PushHandler()), // 推送类型设置
@@ -57,6 +55,7 @@ public enum Command {
     FanfouOAuthURLCommand(new FanfouOAuthURLCommand()),//获取fanfou oauth绑定时的authURL
     FanFouOauthVeriyCommand(new FanFouOauthVeriyCommand()),//获取返回的oauth_verifier参数，完成fanfou的oauth验证过程
     
+    SinglUpdateCommand(new SingleUpdateCommand()),//单独更新微博
     /** 这两个命令必须在最后 */
     HANDLER(new Handler()), // 吃掉所有未知命令 -implemented.
     UPDATE(new UpdateHandler()), // 发布消息 必须在最后，默认就是发布消息 -implemented.

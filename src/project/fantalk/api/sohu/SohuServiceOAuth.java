@@ -3,7 +3,6 @@ package project.fantalk.api.sohu;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.scribe.builder.ServiceBuilder;
@@ -15,11 +14,14 @@ import project.fantalk.api.Utils;
 import project.fantalk.api.common.oauth.AbstractOAuth;
 import project.fantalk.model.Member;
 
-
 public class SohuServiceOAuth extends AbstractOAuth {
 	private static final Logger logger = Logger
 			.getLogger(SohuServiceOAuth.class.getName());
-
+	
+	private static final OAuthService SoHuOAuthService = new ServiceBuilder()
+			.provider(SohuWeiboApi.class).apiKey(SohuConstant.apiKey)
+			.apiSecret(SohuConstant.secret).build();
+	
 	public SohuServiceOAuth(String username, String password) {
 		super(username, password);
 	}
@@ -58,13 +60,10 @@ public class SohuServiceOAuth extends AbstractOAuth {
 	
 	@Override
 	public OAuthService getOAuthService() {
-		return new ServiceBuilder().provider(SohuWeiboApi.class)
-				.apiKey(SohuConstant.apiKey).apiSecret(SohuConstant.secret)
-				.build();
+		return SoHuOAuthService;
 	}
 	
 	public ReturnCode update(String text) {
-
 		try {
 			String params = "status=" + Utils.encode(text);
 			String data = doPost(API.UPDATE_STATUS.url(), params);
@@ -77,22 +76,11 @@ public class SohuServiceOAuth extends AbstractOAuth {
 			logger.log(Level.WARNING, e.getMessage(), e);
 		}
 		return ReturnCode.ERROR_FALSE;
-
 	}
 
 	public ReturnCode verify() {
-		try {
-			String data = doGet(API.VERIFY_ACCOUNT.url());
-			JSONObject o = new JSONObject(data);
-			logger.info(o.toString());
-			if (o.has("id")) {
-				return ReturnCode.ERROR_OK;
-			}
-		} catch (JSONException e) {
-			logger.log(Level.WARNING, e.getMessage(), e);
-		}
-		return ReturnCode.ERROR_FALSE;
-
+		String data = doGet(API.VERIFY_ACCOUNT.url());
+		return getActionCode(data);
 	}
 
 	/**

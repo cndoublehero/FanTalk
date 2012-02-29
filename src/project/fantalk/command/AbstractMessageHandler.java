@@ -7,21 +7,20 @@ import java.util.TimeZone;
 import project.fantalk.api.Utils;
 import project.fantalk.api.fanfou.FanfouService;
 import project.fantalk.api.fanfou.FanfouServiceFactory;
-import project.fantalk.api.fanfou.Message;
+import project.fantalk.api.fanfou.domain.Message;
 import project.fantalk.model.Datastore;
 import project.fantalk.model.Member;
 import project.fantalk.xmpp.XMPPUtils;
 
 import com.google.appengine.api.xmpp.JID;
 
+public abstract class AbstractMessageHandler extends BaseCommand {
 
-public abstract class AbstractMessageHanler extends BaseCommand {
-
-	public AbstractMessageHanler(String name, String... otherNames) {
+	public AbstractMessageHandler(String name, String... otherNames) {
 		super(name, otherNames);
 	}
 
-	public abstract List<project.fantalk.api.fanfou.Message> getMessages(
+	public abstract List<project.fantalk.api.fanfou.domain.Message> getMessages(
 			FanfouService fanfou, int count, String lastId, String maxId,
 			int page);
 
@@ -49,7 +48,7 @@ public abstract class AbstractMessageHanler extends BaseCommand {
 			m.setLastActive(Calendar.getInstance(
 					TimeZone.getTimeZone("GMT+08:00")).getTime());// 更新最后一次API活动时间
 			String lastMessageId = m.getLastMessageId();
-			List<project.fantalk.api.fanfou.Message> messages = getMessages(
+			List<project.fantalk.api.fanfou.domain.Message> messages = getMessages(
 					fanfou, count, lastMessageId, null, 0);
 			if (messages == null || messages.isEmpty()) {// 如果无未读消息
 				XMPPUtils.sendMessage(getMessage(), sender);
@@ -66,7 +65,6 @@ public abstract class AbstractMessageHanler extends BaseCommand {
 			XMPPUtils.sendMessage("你还未绑定饭否帐号，无法查看主页消息！", sender);
 		}
 		m.put();
-
 	}
 
 	public abstract StringBuilder processMessages(Member m, List<Message> messages);
