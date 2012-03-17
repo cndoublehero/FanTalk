@@ -292,7 +292,9 @@ public class FanfouService extends AbstractBasicAuth{
     public List<Status> timeline(String userId, int count, String sinceId,
             String maxId, int page) {
         StringBuilder sb = new StringBuilder();
-        sb.append("id=" + Utils.encode(userId));
+        if (!Utils.isEmpty(userId)) {
+        	sb.append("id=" + Utils.encode(userId));
+        }
         sb.append("&count=" + count);
         if (!Utils.isEmpty(sinceId)) {
             sb.append("&since_id=" + Utils.encode(sinceId));
@@ -306,6 +308,17 @@ public class FanfouService extends AbstractBasicAuth{
         String data = doGet(API.USER_TIMELINE.url(), sb.toString());
         return parseTimeline(data);
     }
+    
+	/**
+	 * 获取用户时间线（消息数范围默认为20）
+	 * 
+	 * @param page
+	 *            页码，从1开始
+	 * @return 返回用户消息列表
+	 */
+	public List<Status> timeline(int page) {
+		return timeline(null, 20, null, null, page);
+	}
 
     /**
      * 获取用户回复列表

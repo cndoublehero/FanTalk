@@ -17,6 +17,10 @@ public class FanFouServiceOAuth extends FanfouService {
 	public FanFouServiceOAuth(Member member) {
 		super(member.getFanfouUserName(), member.getFanfouPassWord());
 	}
+	
+	public FanFouServiceOAuth(String username, String password) {
+    	super(username, password);
+    }
 
 	public String getApiKey() {
 		return FanFouConstant.apiKey;

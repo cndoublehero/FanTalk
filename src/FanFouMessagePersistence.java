@@ -1,54 +1,36 @@
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import com.google.appengine.repackaged.com.google.common.util.Base64;
-
-import project.fantalk.api.fanfou.Parser;
+import project.fantalk.api.fanfou.FanfouService;
 import project.fantalk.api.fanfou.domain.Status;
 
 public class FanFouMessagePersistence {
 	private final static String UserName = "cndoublehero@gmail.com";
-	private final static String PassWord = "";
-
-	private String getUsername() {
-		return UserName;
-	}
-
-	private String getPassword() {
-		return PassWord;
-	}
+	private final static String PassWord = "123456a?";
 
 	public static void main(String[] args) throws IOException {
 		FanFouMessagePersistence fouFouMessageService = new FanFouMessagePersistence();
-		boolean tag = true;
 		int pageNo = 1;
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		StringBuffer sb = new StringBuffer();
-		while (tag) {
-			String str = fouFouMessageService.getFanFouMessage(pageNo++);
-			if (str == null || "".equals(str) || "[]".equals(str)) {
-				tag = false;
-			} else {
-				List<Status> statusList = Parser.parseTimeline(str);
-				for (Status status : statusList) {
-					String message = "\n"
-							+ dateFormat.format(status.getCreatedAt()) + "    "
-							+ status.getText() + "   By " + status.getSource()
-							+ "\n";
-					sb.append(message);
-				}
+		FanfouService fanfouService = new FanfouService(UserName, PassWord);
+		List<Status> statusList = fanfouService.timeline(pageNo);
+		while (statusList != null && !statusList.isEmpty()) {
+			for (Status status : statusList) {
+				String message = "\n"
+						+ dateFormat.format(status.getCreatedAt()) + "    "
+						+ status.getText() + "   By " + status.getSource()
+						+ "\n";
+				sb.append(message);
 			}
+			statusList = fanfouService.timeline(++pageNo);
 		}
 		fouFouMessageService.saveFanFouMessage(sb.toString(), null);
 	}
@@ -68,36 +50,13 @@ public class FanFouMessagePersistence {
 		bfOutPutStream.write(str.getBytes());
 		bfOutPutStream.flush();
 		System.out.println(file.getAbsolutePath());
+		bfOutPutStream.close();
+		fileOutPutStream.close();
 	}
 
 	private String getFileName() {
 		Calendar date = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormat.format(date.getTime());
-	}
-
-	private String getFanFouMessage(int pageNo) throws IOException {
-		URL url = new URL(
-				"http://api.fanfou.com/statuses/user_timeline.json?page="
-						+ pageNo);
-		HttpURLConnection request = (HttpURLConnection) url.openConnection();
-		request.setDoOutput(true);
-		request.setRequestMethod("GET");
-		String basicAuth = Base64.encode((getUsername() + ":" + getPassword())
-				.getBytes());
-		request.addRequestProperty("Authorization", "Basic " + basicAuth);
-		System.out.println("Sending request...");
-
-		request.connect();
-		System.out.println("Response: " + request.getResponseCode() + " "
-				+ request.getResponseMessage());
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				request.getInputStream()));
-		String b = null;
-		StringBuffer sb = new StringBuffer();
-		while ((b = reader.readLine()) != null) {
-			sb.append(b);
-		}
-		return sb.toString();
 	}
 }
