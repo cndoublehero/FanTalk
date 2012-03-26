@@ -8,26 +8,28 @@ import project.fantalk.xmpp.XMPPUtils;
 
 public class SystemHandler extends BaseCommand {
 
-    public SystemHandler() {
-        super("sys","system","sysinfo");
-    }
+	public SystemHandler() {
+		super("sys", "system", "sysinfo");
+	}
 
-    public void doCommand(Message message, String argument) {
+	public void doCommand(Message message, String argument) {
 		JID sender = message.sender;
 		String email = message.email;
-        if (!XMPPUtils.isAdmin(email)) {
-            return;
-        }
-		Datastore ds=Datastore.getInstance();
-		int total=ds.getAllEmailCount();
-		int active=ds.getFanfouBindCount();
-		StringBuilder sb=new StringBuilder();
-		sb.append("Total Accounts: ").append(total).append("\n")
-		.append("Active Accounts: ").append(active).append("\n");
+		if (!XMPPUtils.isAdmin(email)) {
+			return;
+		}
+		Datastore ds = Datastore.getInstance();
+		int totalUserNum = ds.getAllEmailCount();
+		int fanfouUserNum = ds.getFanfouBindCount();
+		int activeUserNum = ds.getActiveFanFouUserCount();
+		StringBuilder sb = new StringBuilder();
+		sb.append("总用户数: ").append(totalUserNum).append("\n")
+				.append("已绑定fanfou的用户数: ").append(fanfouUserNum).append("\n")
+				.append("活跃用户数: ").append(activeUserNum).append("\n");
 		XMPPUtils.sendMessage(sb.toString(), sender);
-    }
+	}
 
-    public String documentation() {
-        return "-sys/sysinfo 查看统计信息";
-    }
+	public String documentation() {
+		return "-sys/sysinfo 查看统计信息";
+	}
 }

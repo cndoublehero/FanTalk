@@ -125,13 +125,17 @@ public final class XMPPUtils {
      * @param jid JID参数
      * @return 如果是管理员，返回true
      */
-    public static boolean isAdmin(String email) {
-        final String admin = System.getProperty("admin");
-        final String user = email.split("@")[0];
-        if (user.equalsIgnoreCase(admin)) {
-            return true;
-        }
-        return false;
-    }
+	public static boolean isAdmin(String email) {
+		final String admin = System.getProperty("admin");
+		final String[] users = admin.split(",");
+		if (users != null && users.length != 0) {
+			for (String user : users) {
+				if (email.equalsIgnoreCase(user)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 }

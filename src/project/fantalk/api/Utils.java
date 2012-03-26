@@ -121,11 +121,7 @@ public final class Utils {
      * @return 是否可以继续操作
      */
     public static boolean canDo(Date date) {
-        if ((Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"))
-                .getTimeInMillis() - date.getTime()) / 1000 > 10) {
-            return true;
-        }
-        return false;
+        return true;
     }
 
     /**
@@ -189,4 +185,11 @@ public final class Utils {
     public static String getAppID(){
         return System.getProperty("appid");
     }
+    
+    public static Date getPreDate(Date date, int before) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DATE, -1 * before);
+		return calendar.getTime();
+	}
 }

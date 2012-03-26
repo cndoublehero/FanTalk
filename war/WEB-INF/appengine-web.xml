@@ -6,7 +6,7 @@
 	<system-properties>
 		<property name="java.util.logging.config.file"
 			value="WEB-INF/logging.properties" />
-		<property name="admin" value="cndoublehero" />
+		<property name="admin" value="cndoublehero@gmail.com" />
 		<property name="appid" value="cndoublehero" />
 	</system-properties>
 	<inbound-services>

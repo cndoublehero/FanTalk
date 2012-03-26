@@ -2,9 +2,11 @@ package project.fantalk.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,6 +15,8 @@ import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
+
+import project.fantalk.api.Utils;
 
 import net.sf.jsr107cache.Cache;
 import net.sf.jsr107cache.CacheException;
@@ -352,6 +356,20 @@ public class Datastore {
 				"SELECT COUNT(1) FROM " + Member.class.getName()
 						+ " WHERE fanfouUserName != ''");
 		Integer count=(Integer) query.execute();
+		endOperation();
+		return count;
+	}
+	
+	public int getActiveFanFouUserCount() {
+		startOperation();
+		Query query = manager.get().newQuery(
+				"SELECT COUNT(1) FROM " + Member.class.getName()
+						+ " WHERE fanfouUserName != ''");
+		query.setFilter("lastActive != '' && lastActive > lastActiveDate");
+		query.declareImports("import java.util.Date");
+		query.declareParameters("Date lastActiveDate");
+		Integer count = (Integer) query.execute(Utils.getPreDate(Calendar
+				.getInstance(TimeZone.getTimeZone("GMT+08:00")).getTime(), 30));
 		endOperation();
 		return count;
 	}
