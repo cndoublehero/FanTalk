@@ -28,7 +28,7 @@ public class BlockCommand extends BaseCommand {
 		FanfouService fanfou = FanfouServiceFactory.newFanFouService(m);
 		if (fanfou != null) {
 			StringBuffer sb = new StringBuffer();
-			int pageNo = 0;
+			int pageNo = 1;
 			List<User> userList = fanfou.blockList(pageNo);
 			List<User> allUserList = new ArrayList<User>();
 			while (!userList.isEmpty()) {
