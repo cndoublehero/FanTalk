@@ -58,8 +58,7 @@ public class HotCommand extends BaseCommand {
 		for (int i = 0; i < statuses.size(); i++) {
 			Status s = statuses.get(i);
 			String name = s.getUserName();
-			String text = s.getText().replaceAll("<b>", "")
-					.replaceAll("</b>", "").replaceAll("&quot;", "'");
+			String text = Utils.encodeHtmlToText(s.getText());
 			String time = Utils.getInterval(s.getCreatedAt());
 			sb.append(name).append("：").append(text).append("    [Time:")
 					.append(time).append(" ]\n\n");

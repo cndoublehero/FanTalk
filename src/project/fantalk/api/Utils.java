@@ -192,4 +192,14 @@ public final class Utils {
 		calendar.add(Calendar.DATE, -1 * before);
 		return calendar.getTime();
 	}
+    
+	public static String encodeHtmlToText(String str) {
+		if (str == null) {
+			return null;
+		}
+		return str.replaceAll("<b>", "").replaceAll("</b>", "")
+				.replaceAll("&quot;", "'").replaceAll("&gt;", ">")
+				.replaceAll("&lt;", "<").replaceAll("<strong>", "")
+				.replaceAll("</strong>", "");
+	}
 }

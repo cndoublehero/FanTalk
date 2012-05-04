@@ -91,9 +91,7 @@ public abstract class StatusesHandler extends BaseCommand {
 				updateMember(m, s.getId());
 			}
 		    String name = s.getUserName();
-			String text = s.getText().replaceAll("<b>", "")
-					.replaceAll("</b>", "").replaceAll("&quot;", "'")
-					.replaceAll("&gt", ">").replaceAll("&lt;", ">");
+			String text = Utils.encodeHtmlToText(s.getText());
 //		    String id = s.getId();
 		    String time = Utils.getInterval(s.getCreatedAt());
 		    map.put(i, s.process());
