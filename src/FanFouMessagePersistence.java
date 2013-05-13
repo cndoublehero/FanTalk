@@ -14,6 +14,7 @@ import project.fantalk.api.fanfou.domain.Status;
 public class FanFouMessagePersistence {
 	private final static String UserName = "";
 	private final static String PassWord = "";
+	private final static String UserId = null;
 
 	public static void main(String[] args) throws IOException {
 		FanFouMessagePersistence fouFouMessageService = new FanFouMessagePersistence();
@@ -21,7 +22,8 @@ public class FanFouMessagePersistence {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		StringBuffer sb = new StringBuffer();
 		FanfouService fanfouService = new FanfouService(UserName, PassWord);
-		List<Status> statusList = fanfouService.timeline(pageNo);
+		List<Status> statusList = fanfouService.timeline(UserId, 20, null,
+				null, pageNo);
 		while (statusList != null && !statusList.isEmpty()) {
 			for (Status status : statusList) {
 				String message = "\n"
@@ -30,17 +32,18 @@ public class FanFouMessagePersistence {
 						+ "\n";
 				sb.append(message);
 			}
-			statusList = fanfouService.timeline(++pageNo);
+			statusList = fanfouService.timeline(UserId, 20, null, null,
+					++pageNo);
 		}
-		fouFouMessageService.saveFanFouMessage(sb.toString(), null);
+		fouFouMessageService.saveFanFouMessage(sb.toString(), UserId);
 	}
 
-	private void saveFanFouMessage(String str, String fileName)
+	private void saveFanFouMessage(String str, String userId)
 			throws IOException {
-		if (fileName == null || "".equals(fileName)) {
-			fileName = getFileName() + ".txt";
+		if (userId == null || "".equals(userId)) {
+			userId = getFileName();
 		}
-		File file = new File(fileName);
+		File file = new File(userId + ".txt");
 		if (file.exists()) {
 			file.delete();
 		}

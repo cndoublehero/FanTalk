@@ -2,6 +2,7 @@ package project.fantalk.api.common.oauth;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -69,7 +70,7 @@ public abstract class AbstractOauthCallback extends HttpServlet {
             processToken(accessToken, accessTokenSecret, m);
         } catch (Exception e) {
             // rollback(m);
-            logger.warning(e.getMessage());
+        	logger.log(Level.WARNING, e.getMessage(), e);
             // message = "帐号绑定失败!";
             // printResult(response, message);
         }

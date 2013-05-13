@@ -2,6 +2,8 @@ package project.fantalk.command;
 
 import java.util.Map;
 
+import com.google.appengine.api.xmpp.JID;
+
 import project.fantalk.api.Utils;
 import project.fantalk.api.fanfou.FanfouService;
 import project.fantalk.api.fanfou.FanfouServiceFactory;
@@ -9,12 +11,9 @@ import project.fantalk.model.Datastore;
 import project.fantalk.model.Member;
 import project.fantalk.xmpp.XMPPUtils;
 
-import com.google.appengine.api.xmpp.JID;
-
-public abstract class AbstractPostMessageHandler extends BaseCommand {
-
-	public AbstractPostMessageHandler(String name, String... otherNames) {
-		super(name, otherNames);
+public class DeleteaMsgHandler extends BaseCommand {
+	public DeleteaMsgHandler() {
+		super("delete", "d");
 	}
 
 	@Override
@@ -27,44 +26,54 @@ public abstract class AbstractPostMessageHandler extends BaseCommand {
 			return;
 		}
 		String[] args = argument.split("\\s+", 2);
-		if (args.length < 2) {
+		if (args.length < 1) {
 			XMPPUtils.sendMessage(getErrorMsg(), sender);
 			return;
 		}
 		Datastore ds = Datastore.getInstance();
-		Map<Integer, String> map = getCache(email, ds);
+		Map<Integer, String> map = ds.getStatusesCache(email);
 		if (map != null && !map.isEmpty()) {
-			String text = args[1];
 			int id = Utils.toInt(args[0]);
 			if (id >= 0 && id < map.size()) {
 				Member m = ds.getAndCacheMember(email);
 				FanfouService fanfou = FanfouServiceFactory.newFanFouService(m);
 				if (fanfou != null) {
-					String[] msgParam = Utils.process(map.get(id));
-					if (executeMessage(fanfou, text, msgParam)) {
-						XMPPUtils.sendMessage(getOkMsg(msgParam[2]), sender);
+					String[] msgArgs = Utils.process(map.get(id));
+					if (fanfou.delete(msgArgs[0])) {
+						XMPPUtils.sendMessage(getOkMsg(msgArgs[2]), sender);
 					} else {
-						XMPPUtils.sendMessage("回复失败", sender);
+						XMPPUtils.sendMessage("删除失败", sender);
 					}
 				} else {
-					XMPPUtils.sendMessage("未绑定饭否帐号，回复失败", sender);
+					XMPPUtils.sendMessage("未绑定饭否帐号，删除失败", sender);
 				}
 			} else {
-				XMPPUtils.sendMessage("无效ID，回复失败", sender);
+				XMPPUtils.sendMessage("删除失败", sender);
 			}
 		} else {
 			XMPPUtils.sendMessage("消息没有缓存，无法回复", sender);
 		}
 	}
 
-	public abstract boolean executeMessage(FanfouService fanfou, String text,
-			String... args);
+	public boolean executeMessage(FanfouService fanfou, String text,
+			String... args) {
+		return fanfou.delete(args[0]);
+	}
 
-	public abstract Map<Integer, String> getCache(String email, Datastore ds);
+	public Map<Integer, String> getCache(String email, Datastore ds) {
+		return ds.getStatusesCache(email);
+	}
 
-	public abstract String getErrorMsg();
-	
+	public String getErrorMsg() {
+		return "格式错误，删除某条消息的格式为: -delete or -d id.";
+	}
+
 	public String getOkMsg(String text) {
-		return "回复消息成功，消息内容为 ：      " + Utils.encodeHtmlToText(text);
+		return "删除消息成功，消息内容为 ：      " + Utils.encodeHtmlToText(text);
+	}
+
+	@Override
+	public String documentation() {
+		return "-delete or d id 删除参数为id的消息";
 	}
 }

@@ -56,6 +56,7 @@ public enum Command {
     FanFouOauthVeriyCommand(new FanFouOauthVeriyCommand()),//获取返回的oauth_verifier参数，完成fanfou的oauth验证过程
     
     SinglUpdateCommand(new SingleUpdateCommand()),//单独更新微博
+    DELETE(new DeleteaMsgHandler()),//删除消息
     /** 这两个命令必须在最后 */
     HANDLER(new Handler()), // 吃掉所有未知命令 -implemented.
     UPDATE(new UpdateHandler()), // 发布消息 必须在最后，默认就是发布消息 -implemented.

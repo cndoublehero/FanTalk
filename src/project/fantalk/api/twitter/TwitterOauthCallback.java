@@ -43,6 +43,7 @@ public class TwitterOauthCallback extends AbstractOauthCallback {
 
 	@Override
 	public OAuthProvider processProvider(OAuthProvider provider) {
+		provider.setOAuth10a(true);
 		return provider;
 	}
 
