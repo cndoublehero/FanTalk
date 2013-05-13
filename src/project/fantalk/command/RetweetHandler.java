@@ -31,7 +31,6 @@ public class RetweetHandler extends AbstractPostMessageHandler {
 
 	@Override
 	public String getErrorMsg() {
-		return "格式错误，回复消息的格式为: -re id content.";
+		return "格式错误，回复消息的格式为: -rt id content.";
 	}
-
 }

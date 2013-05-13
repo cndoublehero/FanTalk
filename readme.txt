@@ -1,4 +1,7 @@
-﻿2011-1-8
+﻿上传命令为：
+D:\appengine-java-sdk-1.8.0\appengine-java-sdk-1.8.0\bin\appcfg.cmd --proxy=127.0.0.1:8087 update war
+
+2011-1-8
 修改处包括:
 1.重构之前的代码，将查询数据库和缓存数据绑定在一起
 2.重构权限验证处代码，将basic和oauth两种验证方式封装起来
