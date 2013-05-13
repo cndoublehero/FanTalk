@@ -40,7 +40,7 @@ public class DebugHandler extends BaseCommand {
         Datastore datastore = Datastore.getInstance();
         String[] args = argument.split("\\s+", 2);
         String command = args[0];
-        if (command.equalsIgnoreCase(CMD_CLEAR_CACHE)) {
+        if (CMD_CLEAR_CACHE.equalsIgnoreCase(command)) {
             datastore.clearCache();
             XMPPUtils.sendMessage("已清除所有缓存", sender);
             return;
@@ -52,15 +52,15 @@ public class DebugHandler extends BaseCommand {
 				if (m != null) {
 					StringBuilder sb = getDetailMember(m);
 					XMPPUtils.sendMessage(sb.toString(), sender);
-					return;
 				}
 			}
+			return;
 		}
         String user = args[1];
         if (Utils.isEmpty(user)) {
             showHelp(sender);
             return;
-        } else if (command.equalsIgnoreCase(CMD_REMOVE_USER)) {
+        } else if (CMD_REMOVE_USER.equalsIgnoreCase(command)) {
             Member m = datastore.getMember(user);
             if (m != null) {
                 datastore.delete(user);
@@ -69,16 +69,16 @@ public class DebugHandler extends BaseCommand {
             } else {
                 XMPPUtils.sendMessage("此用户不存在: " + user, sender);
             }
-        } else if (command.equalsIgnoreCase(CMD_REMOVE_USER_CACHE)) {
+        } else if (CMD_REMOVE_USER_CACHE.equalsIgnoreCase(command)) {
             datastore.removeCache(user);
             XMPPUtils.sendMessage("已清除此用户的缓存: " + user, sender);
-        } else if (command.equalsIgnoreCase(CMD_IS_CACHED)) {
+        } else if (CMD_IS_CACHED.equalsIgnoreCase(CMD_IS_CACHED)) {
             if (datastore.getFromCache(user) != null) {
                 XMPPUtils.sendMessage("此用户的信息已缓存: " + user, sender);
             } else {
                 XMPPUtils.sendMessage("此用户的信息没有缓存: " + user, sender);
             }
-        } else if (command.equalsIgnoreCase(CMD_SHOW_USER_INFO)) {
+        } else if (CMD_SHOW_USER_INFO.equalsIgnoreCase(command)) {
             Member m = datastore.getMember(user);
             if (m != null) {
             	StringBuilder sb = getDetailMember(m);
@@ -86,7 +86,7 @@ public class DebugHandler extends BaseCommand {
             } else {
                 XMPPUtils.sendMessage("此用户不存在: " + user, sender);
             }
-        } else if (command.equalsIgnoreCase(CMD_SHOW_STATUSES_CACHE)) {
+        } else if (CMD_SHOW_STATUSES_CACHE.equalsIgnoreCase(command)) {
             Map<Integer, String> map = datastore.getStatusesCache(user);
             if (map!=null && !map.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
