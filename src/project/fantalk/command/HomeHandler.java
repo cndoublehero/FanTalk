@@ -10,7 +10,7 @@ import project.fantalk.model.Member;
 public final class HomeHandler extends StatusesHandler {
 
 	public HomeHandler() {
-		super("home");
+		super("home", "1");
 	}
 
 	public String documentation() {

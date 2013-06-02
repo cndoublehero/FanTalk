@@ -11,7 +11,7 @@ import project.fantalk.model.Member;
 public class OutBoxMessageCommand extends AbstractMessageHandler {
 
 	public OutBoxMessageCommand() {
-		super("outbox", "out");
+		super("outbox", "out", "7");
 	}
 
 	public String documentation() {

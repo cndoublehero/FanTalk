@@ -13,7 +13,7 @@ import project.fantalk.model.Member;
 public class InBoxMessageCommand extends AbstractMessageHandler {
 
 	public InBoxMessageCommand() {
-		super("inbox", "in");
+		super("inbox", "in", "6");
 	}
 
 	public String documentation() {

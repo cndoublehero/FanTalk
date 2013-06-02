@@ -10,7 +10,7 @@ import project.fantalk.model.Member;
 public final class MentionsHandler extends StatusesHandler {
 
 	public MentionsHandler() {
-		super("mentions", "tome");
+		super("mentions", "tome", "2");
 	}
 
 	public String documentation() {

@@ -7,7 +7,7 @@ import project.fantalk.model.Datastore;
 public class ReplyHandler extends AbstractPostMessageHandler {
 
 	public ReplyHandler() {
-		super("reply", "re", "r", "@", "0", "00");
+		super("reply", "re", "r", "@", "3");
 	}
 
 	public String documentation() {

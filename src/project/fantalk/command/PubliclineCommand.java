@@ -9,7 +9,7 @@ import project.fantalk.api.fanfou.domain.Status;
 public final class PubliclineCommand extends StatusesHandler {
 
 	public PubliclineCommand() {
-		super("look", "see", "public");
+		super("look", "see", "public","5");
 	}
 
 	public String documentation() {

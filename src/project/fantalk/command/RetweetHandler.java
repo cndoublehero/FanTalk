@@ -8,7 +8,7 @@ import project.fantalk.model.Datastore;
 public class RetweetHandler extends AbstractPostMessageHandler {
 
 	public RetweetHandler() {
-		super("retweet", "rt");
+		super("retweet", "rt", "4");
 	}
 
 	public String documentation() {
@@ -21,7 +21,7 @@ public class RetweetHandler extends AbstractPostMessageHandler {
 		String statusId = args[0];
 		String name = args[1];
 		String origText = args[2];
-		return fanfou.repost(text + "->@" + name + " " + origText, statusId);
+		return fanfou.repost(text + "@" + name + " " + origText, statusId);
 	}
 
 	@Override

@@ -56,6 +56,9 @@ public final class XMPPServlet extends HttpServlet {
 			JID sender = xmppMessage.getFromJid();
 			String email = XMPPUtils.JIDToEmail(sender);
 			datastore.getAndCacheMember(email);
+			if (content.startsWith("-")) {
+				content = content.substring(1);
+			}
 			project.fantalk.xmpp.Message message = new project.fantalk.xmpp.Message.Builder()
 					.setContent(content).setSender(sender).setType(
 							project.fantalk.xmpp.Message.Type.XMPP).build();

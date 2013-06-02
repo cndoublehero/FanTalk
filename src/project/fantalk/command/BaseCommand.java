@@ -11,7 +11,7 @@ abstract class BaseCommand implements CommandHandler {
     private final Pattern pattern;
 
     BaseCommand(String name, String... otherNames) {
-        StringBuilder sb = new StringBuilder("^[/-](?:");// ("^[/-\@](?:")
+        StringBuilder sb = new StringBuilder("(?:");// ("^[/-\@](?:")
         sb.append(name);
         for (String otherName : otherNames) {
             sb.append("|").append(otherName);
