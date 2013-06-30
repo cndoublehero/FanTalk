@@ -25,15 +25,14 @@ public class DeleteaMsgHandler extends BaseCommand {
 			XMPPUtils.sendMessage(getErrorMsg(), sender);
 			return;
 		}
-		String[] args = argument.split("\\s+", 2);
-		if (args.length < 1) {
-			XMPPUtils.sendMessage(getErrorMsg(), sender);
-			return;
-		}
+		int index = 0;
+        if (!Utils.isEmpty(argument)) {
+        	index = Utils.toInt(argument);
+        }
 		Datastore ds = Datastore.getInstance();
 		Map<Integer, String> map = ds.getStatusesCache(email);
 		if (map != null && !map.isEmpty()) {
-			int id = Utils.toInt(args[0]);
+			int id = index;
 			if (id >= 0 && id < map.size()) {
 				Member m = ds.getAndCacheMember(email);
 				FanfouService fanfou = FanfouServiceFactory.newFanFouService(m);

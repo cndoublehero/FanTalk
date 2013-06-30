@@ -44,7 +44,6 @@ public class SingleUpdateCommand extends BaseCommand {
 					sender);
 			return;
 		}
-		commandName = commandName.substring(1).trim();
 		Member m = (Member) Datastore.getInstance().getAndCacheMember(email);
 		StringBuilder sbOK = new StringBuilder();
 		if (isStartsWith(commandName, "fanfou", "fan", "f")) {

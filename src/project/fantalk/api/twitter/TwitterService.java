@@ -14,7 +14,9 @@ public class TwitterService implements IBaseMethod {
             .getName());
     private String accessToken;
     private String accessTokenSecret;
-
+	static final String API_VERSION = "1.1";
+	static final String DEFAULT_TWITTER_URL = "https://api.twitter.com/"+API_VERSION;
+    
     public TwitterService(String username, String password) {
         this.accessToken = username;
         this.accessTokenSecret = password;
@@ -36,6 +38,7 @@ public class TwitterService implements IBaseMethod {
                 TwitterConstant.apiKey, TwitterConstant.secret, accessToken,
                 accessTokenSecret);
         Twitter twitter = new Twitter(null, client);
+        twitter.setAPIRootUrl(DEFAULT_TWITTER_URL);
         try {
             twitter.updateStatus(text);
             rc = ReturnCode.ERROR_OK;
@@ -64,6 +67,7 @@ public class TwitterService implements IBaseMethod {
                 TwitterConstant.apiKey, TwitterConstant.secret, accessToken,
                 accessTokenSecret);
         Twitter twitter = new Twitter(null, client);
+        twitter.setAPIRootUrl(DEFAULT_TWITTER_URL);
         try {
             if (twitter.isValidLogin()) {
                 rc = ReturnCode.ERROR_OK;
